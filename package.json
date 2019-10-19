@@ -1,0 +1,27 @@
+{
+  "name": "jord-orm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/orm/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/pluralize": "0.0.29",
+    "knex": "^0.19.5",
+    "lodash": "^4.17.15",
+    "luxon": "^1.19.3",
+    "nesthydrationjs": "github:jordansoltman/NestHydrationJS",
+    "pluralize": "^8.0.0",
+    "typescript": "^3.6.4",
+    "validator": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.144",
+    "@types/luxon": "^1.15.2",
+    "@types/node": "^12.11.1",
+    "@types/validator": "^10.11.3"
+  }
+}
