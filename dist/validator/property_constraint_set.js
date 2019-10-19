@@ -109,10 +109,17 @@ class ValidationPropertyConstraintSet {
         };
         this.addConstraint(func, error, { groups: options.groups });
     }
+    /**
+     * Checks if the property is an int and exists on the table. The default column name is 'id'.
+     * @param tableName
+     * @param column
+     * @param options
+     */
     key(tableName, column = 'id', options = {}) {
         this.isInt(options);
         this.exists(tableName, column, options);
     }
+    // TODO: add soft delete option!
     exists(tableName, column = 'id', options = {}) {
         const error = options.error ? options.error : 'This value doesn\'t exist';
         const func = (value) => {
@@ -151,7 +158,7 @@ class ValidationPropertyConstraintSet {
         return constraints.filter((constraint) => {
             if (constraint.groups === null) {
                 return true;
-            }
+            } // All contraints without a group are returned
             if (groups) {
                 return lodash_1.default.intersection(constraint.groups, groups).length > 0;
             }

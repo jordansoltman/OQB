@@ -7,6 +7,9 @@ export declare enum StandardGroup {
     INSERT = "INSERT",
     UPDATE = "UPDATE"
 }
+/**
+ * TABLE
+ */
 export declare const VALIDATION_DEFAULT_GROUP = "VALIDATION_DEFAULT_GROUP";
 export declare type TableValidationFunction = ((data: IDatabaseData, groups: string[]) => boolean | string) | ((data: IDatabaseData, groups: string[]) => Promise<boolean | string>);
 export interface ITableValidationConstraint {
@@ -14,6 +17,9 @@ export interface ITableValidationConstraint {
     func: TableValidationFunction;
     groups: string[] | null;
 }
+/**
+ * PROPERTY
+ */
 export declare type PropertyValidationFunction = ((value: any, data: IDatabaseData, groups: string[]) => boolean) | ((value: any, data: IDatabaseData, groups: string[]) => Promise<boolean>);
 export interface IPropertyValidationConstraint {
     error: string;

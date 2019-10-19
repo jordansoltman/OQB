@@ -20,6 +20,12 @@ export declare class ValidationPropertyConstraintSet {
     isInt(options?: IValidationOptions): void;
     isNotEmpty(options?: IValidationOptions): void;
     isEmpty(options?: IValidationOptions): void;
+    /**
+     * Checks if the property is an int and exists on the table. The default column name is 'id'.
+     * @param tableName
+     * @param column
+     * @param options
+     */
     key(tableName: string, column?: string, options?: IValidationOptions): void;
     exists(tableName: string, column?: string, options?: IValidationOptions): void;
     unique(tableName: string, column?: string, options?: IValidationOptions): void;

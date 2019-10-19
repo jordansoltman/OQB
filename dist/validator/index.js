@@ -10,6 +10,17 @@ class Validator {
         this.validationProperties = new properties_1.ValidationProperties(databaseValidator);
         this.validationTable = new table_1.ValidationTable(databaseValidator);
     }
+    /**
+     * Validates the data for the given group.
+     *
+     * @param {IDatabaseData} data The data to validate
+     * @param {ValidationGroupMethod} group The group to use for validation
+     * @returns {(Promise<null | IValidationErrors>)} Returns null if their are no errors,
+     * otherwise an object of errors:
+     *  {
+     *      <property name>: string[] - array of errors
+     *  }
+     */
     async validate(data, group = null, options = {}) {
         const groups = util_1.arrayIfNot(group);
         const fieldErrors = await this.validationProperties.validate(data, groups, options.properties);

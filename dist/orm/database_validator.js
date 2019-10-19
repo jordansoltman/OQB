@@ -5,6 +5,7 @@ class DatabaseValidator {
     constructor(orm) {
         this.orm = orm;
     }
+    // TODO: this should support composite keys
     async exists(data, tableName, columns) {
         const where = { and: [] };
         for (const column of util_1.arrayIfNot(columns)) {
@@ -13,6 +14,7 @@ class DatabaseValidator {
         const count = await this.orm.models[tableName].count({ where });
         return count > 0;
     }
+    // TODO: this should support soft deletes
     async unique(data, tableName, columns) {
         const where = { and: [] };
         for (const column of util_1.arrayIfNot(columns)) {
