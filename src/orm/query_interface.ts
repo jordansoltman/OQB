@@ -3,7 +3,7 @@ import knexLib from 'knex';
 import _ from 'lodash';
 import { singular } from 'pluralize';
 import { arrayIfNot } from '../util';
-import { BelongsToAssociation, BelongsToManyAssociation, HasManyAssocation } from './assocations';
+import { BelongsToAssociation, BelongsToManyAssociation, HasManyAssocation, HasOneAssociation } from './assocations';
 import { Model } from './model';
 // tslint:disable-next-line:max-line-length
 import { ColumnValue, IDatabaseData, IDeleteOptions, IInsertOptions, IPrimaryKeyPairs, IRelatedColumnIdentifier, ISelectIncludedTableOptions, ISelectOptions, IUpdateOptions, IWhere, Order, SelectInclude } from './types';
@@ -438,7 +438,7 @@ export class QueryInterface {
                         !(includeOptions.excludeAttributes &&
                             includeOptions.excludeAttributes.includes(assocationName)))
                     {
-                        if (assocation instanceof BelongsToAssociation) {
+                        if (assocation instanceof BelongsToAssociation || assocation instanceof HasOneAssociation) {
                             rootDefinition[assocationName] = nextDefinition;
                         } else if (assocation instanceof HasManyAssocation) {
                             rootDefinition[assocationName] = [nextDefinition];

@@ -5,7 +5,7 @@ import hydration from 'nesthydrationjs';
 import { arrayIfNot } from '../util';
 import { Validator } from '../validator';
 import { IValidationErrors } from '../validator/errors';
-import { Association, BelongsToAssociation, BelongsToManyAssociation, HasManyAssocation } from './assocations';
+import { Association, BelongsToAssociation, BelongsToManyAssociation, HasManyAssocation, HasOneAssociation } from './assocations';
 import { DataType } from './constant';
 import { Orm } from './index'; // CIRCULAR DEPENDENCY
 import { QueryInterface } from './query_interface';
@@ -48,7 +48,7 @@ export class Model {
 
     // Overridden by sub methods
     // tslint:disable-next-line: no-empty
-    public static associate() {}
+    public static associate() { }
 
     // tslint:disable-next-line: no-shadowed-variable
     public static init(orm: Orm, name: string, columns: IColumnDefinitions, options: IModelOptions) {
@@ -112,8 +112,7 @@ export class Model {
     public static validate(
         data: IDatabaseData,
         group?: string | string[],
-        options?: { properties?: string[] }): Promise<null | IValidationErrors> 
-    {
+        options?: { properties?: string[] }): Promise<null | IValidationErrors> {
         return this.validator.validate(data, group, options);
     }
 
@@ -185,7 +184,7 @@ export class Model {
 
         if (includedPrimaryKeys.length > 0) {
             return _.pick(values, includedPrimaryKeys);
-        // If a primary key wasn't provided, we can assume it must be an auto-incrementing id
+            // If a primary key wasn't provided, we can assume it must be an auto-incrementing id
         } else if (this.primaryKeyColumnNames.length === 1 && Array.isArray(result) && result.length === 1) {
             return { [this.primaryKeyColumnNames[0]]: result[0] };
         }
@@ -217,7 +216,7 @@ export class Model {
         }
     }
 
-    public static async findOne(options: ISelectOptions = {}): Promise<any|null> {
+    public static async findOne(options: ISelectOptions = {}): Promise<any | null> {
 
         options.limit = 1;
 
@@ -228,7 +227,7 @@ export class Model {
 
     }
 
-    public static async findOneById(key: PrimaryKey, options: ISelectOptions = {}): Promise<any|null> {
+    public static async findOneById(key: PrimaryKey, options: ISelectOptions = {}): Promise<any | null> {
 
         // TODO: do we need to clone options
 
@@ -249,9 +248,9 @@ export class Model {
         }
 
         const whereKeys: IWhere[] = [];
-         // This has to be moved into thions clause
+        // This has to be moved into thions clause
         for (const [primaryKey, value] of Object.entries(primaryKeys)) {
-            whereKeys.push({eq: [primaryKey, value]});
+            whereKeys.push({ eq: [primaryKey, value] });
         }
 
         if (options.where) {
@@ -301,7 +300,7 @@ export class Model {
         return count[0].count;
     }
 
-    protected static configureValidator(validator: Validator) {}
+    protected static configureValidator(validator: Validator) { }
 
     protected static get validator(): Validator {
         const validator = new Validator(this.orm);
@@ -377,14 +376,13 @@ export class Model {
      */
     protected static belongsToMany(
         { to, toKey, through, fromKey, as }:
-        {
-            to: typeof Model;
-            toKey: ForeignKey;
-            through: typeof Model;
-            fromKey: ForeignKey;
-            as: string;
-        })
-    {
+            {
+                to: typeof Model;
+                toKey: ForeignKey;
+                through: typeof Model;
+                fromKey: ForeignKey;
+                as: string;
+            }) {
 
         if (!to || !(to.prototype instanceof Model)) {
             throw new Error(`Belongs to many relationship: ${as}, from model: ${this.tableName} could
@@ -417,6 +415,37 @@ export class Model {
         const assocation = new BelongsToManyAssociation(to, through, fromKeyMap, toKeyMap);
         this._associate(as, assocation);
 
+    }
+
+    /**
+     * Creates a has one realtionship with the given model.
+     *
+     * @protected
+     * @static
+     * @param {typeof Model} to Model to create a relationship with
+     * @param {string} as Name of the relationship
+     * @param {ForeignKey} foreignKey Either a string specifying the foreign key column in the calling model
+     * that relates to the primary key of the 'to' model, or a foreign kep map { foreignModelId: 'callingModelId', ... }
+     * @memberof Model
+     */
+    protected static hasOne({ to, as, foreignKey }: { to: typeof Model; as: string; foreignKey: ForeignKey; }) {
+
+        if (!to || !(to.prototype instanceof Model)) {
+            throw new Error(`Has one many relationship: ${as} from model: ${this.tableName} could
+            not be established because the 'to' model is not defined, or is not a model.`);
+        }
+
+        if (typeof foreignKey === 'string' && to.primaryKeyColumnNames.length > 1) {
+            throw new Error(`Has to relationship (${as}) from ${this.tableName} to ${to.tableName} requires a
+            foreign key map because ${to.tableName} has a composite primary key.`);
+        }
+
+        const foreignKeyMap = typeof foreignKey === 'string' ?
+            { [to.primaryKeyColumnNames[0]]: foreignKey  } :
+            foreignKey;
+
+        const assocation = new HasOneAssociation(to, foreignKeyMap);
+        this._associate(as, assocation);
     }
 
     /**

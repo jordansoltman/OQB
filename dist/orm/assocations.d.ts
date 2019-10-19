@@ -6,6 +6,9 @@ export declare abstract class Association {
     multiAssociation: boolean;
     constructor(to: typeof Model, foreignKeyMap: IPrimaryKeyPairs, multiAssociation: boolean);
 }
+export declare class HasOneAssociation extends Association {
+    constructor(to: typeof Model, foreignKeyMap: IPrimaryKeyPairs);
+}
 export declare class HasManyAssocation extends Association {
     constructor(to: typeof Model, foreignKeyMap: IPrimaryKeyPairs);
 }

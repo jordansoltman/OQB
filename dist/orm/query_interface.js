@@ -208,7 +208,7 @@ class QueryInterface {
                             !includeOptions.attributes.includes(assocationName)) &&
                         !(includeOptions.excludeAttributes &&
                             includeOptions.excludeAttributes.includes(assocationName))) {
-                        if (assocation instanceof assocations_1.BelongsToAssociation) {
+                        if (assocation instanceof assocations_1.BelongsToAssociation || assocation instanceof assocations_1.HasOneAssociation) {
                             rootDefinition[assocationName] = nextDefinition;
                         }
                         else if (assocation instanceof assocations_1.HasManyAssocation) {

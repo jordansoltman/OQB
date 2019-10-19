@@ -12,6 +12,12 @@ export abstract class Association {
     }
 }
 
+export class HasOneAssociation extends Association {
+    constructor(to: typeof Model, foreignKeyMap: IPrimaryKeyPairs) {
+        super(to, foreignKeyMap, false);
+    }
+}
+
 export class HasManyAssocation extends Association {
     constructor(to: typeof Model, foreignKeyMap: IPrimaryKeyPairs) {
         super(to, foreignKeyMap, true);

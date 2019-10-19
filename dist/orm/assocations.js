@@ -8,6 +8,12 @@ class Association {
     }
 }
 exports.Association = Association;
+class HasOneAssociation extends Association {
+    constructor(to, foreignKeyMap) {
+        super(to, foreignKeyMap, false);
+    }
+}
+exports.HasOneAssociation = HasOneAssociation;
 class HasManyAssocation extends Association {
     constructor(to, foreignKeyMap) {
         super(to, foreignKeyMap, true);

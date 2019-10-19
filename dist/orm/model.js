@@ -216,6 +216,21 @@ class Model {
         const assocation = new assocations_1.BelongsToManyAssociation(to, through, fromKeyMap, toKeyMap);
         this._associate(as, assocation);
     }
+    static hasOne({ to, as, foreignKey }) {
+        if (!to || !(to.prototype instanceof Model)) {
+            throw new Error(`Has one many relationship: ${as} from model: ${this.tableName} could
+            not be established because the 'to' model is not defined, or is not a model.`);
+        }
+        if (typeof foreignKey === 'string' && to.primaryKeyColumnNames.length > 1) {
+            throw new Error(`Has to relationship (${as}) from ${this.tableName} to ${to.tableName} requires a
+            foreign key map because ${to.tableName} has a composite primary key.`);
+        }
+        const foreignKeyMap = typeof foreignKey === 'string' ?
+            { [to.primaryKeyColumnNames[0]]: foreignKey } :
+            foreignKey;
+        const assocation = new assocations_1.HasOneAssociation(to, foreignKeyMap);
+        this._associate(as, assocation);
+    }
     static belongsTo({ to, as, foreignKey }) {
         if (!to || !(to.prototype instanceof Model)) {
             throw new Error(`Belongs to many relationship: ${as} from model: ${this.tableName} could

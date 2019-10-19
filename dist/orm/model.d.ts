@@ -48,6 +48,11 @@ export declare class Model {
         fromKey: ForeignKey;
         as: string;
     }): void;
+    protected static hasOne({ to, as, foreignKey }: {
+        to: typeof Model;
+        as: string;
+        foreignKey: ForeignKey;
+    }): void;
     protected static belongsTo({ to, as, foreignKey }: {
         to: typeof Model;
         as: string;
