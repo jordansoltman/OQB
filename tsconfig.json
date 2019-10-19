@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "baseUrl": ".",
+        "declaration": true,
         "paths": { "*": ["types/*"] },
         "module": "commonjs",
         "moduleResolution": "Node",
