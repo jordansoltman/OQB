@@ -7,6 +7,7 @@ var DataType;
     DataType["DATETIME"] = "DATETIME";
     DataType["BOOLEAN"] = "BOOLEAN";
     DataType["INTEGER"] = "INTEGER";
+    DataType["FLOAT"] = "FLOAT";
     DataType["TEXT"] = "TEXT";
 })(DataType = exports.DataType || (exports.DataType = {}));
 //# sourceMappingURL=constant.js.map

@@ -386,8 +386,8 @@
         "signature": "12d0786db350449d36a8d6059d0f39e7009540f60aad1ac1636786cf882638f8"
       },
       "./src/orm/constant.ts": {
-        "version": "3805a912751d6e1ea016ac7cffca8c7fb1d1676cfc2b72473c41a4456f12fa4f",
-        "signature": "573860d17baed64e1af944604d442cd5e77fc9662225aac13abec3d20107d10a"
+        "version": "e1db2d946f137651673541cd3bc085f9681b5ce452d843e8f8c5497d9fc330d8",
+        "signature": "8d8630567a71944262a71f20fbd0dc4c89169a80ee006639ed265343215edbb4"
       },
       "./node_modules/@types/pluralize/index.d.ts": {
         "version": "8f7a2387ecc680872d09a6edbca1612d699f77ee5a5129944935c3798a613d04",
@@ -2419,20 +2419,20 @@
       "./node_modules/knex/types/index.d.ts",
       "./node_modules/@types/luxon/index.d.ts",
       "./node_modules/nesthydrationjs/lib/nesthydrationjs.d.ts",
-      "./src/orm/constant.ts",
       "./node_modules/@types/pluralize/index.d.ts",
-      "./src/orm/types.ts",
-      "./src/orm/query_interface.ts",
-      "./src/orm/index.ts",
-      "./src/orm/database_validator.ts",
       "./src/validator/errors.ts",
       "./node_modules/@types/validator/index.d.ts",
+      "./src/orm/constant.ts",
+      "./src/orm/model.ts",
+      "./src/orm/index.ts",
+      "./src/orm/types.ts",
+      "./src/orm/query_interface.ts",
+      "./src/orm/database_validator.ts",
       "./src/validator/types.ts",
       "./src/validator/property_constraint_set.ts",
       "./src/validator/properties.ts",
       "./src/validator/table.ts",
       "./src/validator/index.ts",
-      "./src/orm/model.ts",
       "./src/orm/assocations.ts"
     ]
   },
