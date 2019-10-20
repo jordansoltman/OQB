@@ -1,6 +1,6 @@
 {
   "name": "jord-orm",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "dist/orm/index.js",
   "scripts": {
@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/pluralize": "0.0.29",
     "knex": "^0.19.5",
     "lodash": "^4.17.15",
     "luxon": "^1.19.3",
@@ -19,6 +18,7 @@
     "validator": "^11.1.0"
   },
   "devDependencies": {
+    "@types/pluralize": "0.0.29",
     "@types/lodash": "^4.14.144",
     "@types/luxon": "^1.15.2",
     "@types/node": "^12.11.1",

@@ -81,6 +81,10 @@ class QueryInterface {
         const query = this.knex.queryBuilder().options({ nestTables: '.' });
         const countQuery = this.knex.queryBuilder().count('* as count').from(tableName);
         const queryBuilder = this;
+        // build the count query if needed
+        if (joinTree.required || meta.hasMultiAssociation) {
+            queryBuilder.buildSelectSubQuery(countQuery, joinTree, true);
+        }
         // Determine if we need to build a sub query as well
         if (joinTree.required || (standardizedOptions.limit && meta.hasMultiAssociation)) {
             query.from(function () {
@@ -89,8 +93,6 @@ class QueryInterface {
                 queryBuilder.setSelectQueryLimitOffset(subQuery, standardizedOptions);
                 queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
             });
-            // build the count query
-            queryBuilder.buildSelectSubQuery(countQuery, joinTree, true);
         }
         else {
             query.select().from(tableName);

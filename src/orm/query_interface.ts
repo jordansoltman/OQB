@@ -208,6 +208,11 @@ export class QueryInterface {
         const countQuery = this.knex.queryBuilder().count('* as count').from(tableName);
         const queryBuilder = this;
 
+        // build the count query if needed
+        if (joinTree.required || meta.hasMultiAssociation) {
+            queryBuilder.buildSelectSubQuery(countQuery, joinTree, true);
+        }
+
         // Determine if we need to build a sub query as well
         if (joinTree.required || (standardizedOptions.limit && meta.hasMultiAssociation)) {
             query.from(function() {
@@ -217,8 +222,6 @@ export class QueryInterface {
                 queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
             });
 
-            // build the count query
-            queryBuilder.buildSelectSubQuery(countQuery, joinTree, true);
         } else {
             query.select().from(tableName);
             // We don't always set the limit because if we are pulling many records we don't want to limit
