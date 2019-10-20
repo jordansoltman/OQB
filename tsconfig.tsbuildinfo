@@ -398,7 +398,7 @@
         "signature": "72edda053c7b15f08cf71308560268f5a6d8f8d855289da52696c10b73ae0225"
       },
       "./src/orm/query_interface.ts": {
-        "version": "de18928d20bf8c45c59832d6e781e69c3558e91f3eedfeafd2f30850e7e69499",
+        "version": "99b3f75beb61aea141b954c4a19ea4fc6b3140d894d7dc3db622e0a4d2903ff4",
         "signature": "9048c530e3143ea405d87a46e51ecea06b9ea5d7b667016466ce3e50e720e380"
       },
       "./src/orm/index.ts": {

@@ -204,18 +204,22 @@ export class QueryInterface {
 
         const [joinTree, definition, meta] = this.buildSelectJoinTree(rootModel, standardizedOptions);
 
-        const query = this.knex.queryBuilder().options({ nestTables: '.' });
-        const countQuery = this.knex.queryBuilder().count('* as count').from(tableName);
         const queryBuilder = this;
 
-        // build the count query if needed
+        // Build the count query.
+        const countQuery = this.knex.queryBuilder().count('* as count').from(tableName);
         if (joinTree.required || meta.hasMultiAssociation) {
             queryBuilder.buildSelectSubQuery(countQuery, joinTree, true);
+        } else {
+            queryBuilder.buildSelectQuery(countQuery, joinTree);
         }
+
+        // Build the main query
+        const query = this.knex.queryBuilder().options({ nestTables: '.' });
 
         // Determine if we need to build a sub query as well
         if (joinTree.required || (standardizedOptions.limit && meta.hasMultiAssociation)) {
-            query.from(function() {
+            query.from(function () {
                 const subQuery = this.select(`${tableName}.*`).from(tableName).as(tableName);
                 queryBuilder.buildSelectSubQuery(subQuery, joinTree, true);
                 queryBuilder.setSelectQueryLimitOffset(subQuery, standardizedOptions);
@@ -227,9 +231,6 @@ export class QueryInterface {
             // We don't always set the limit because if we are pulling many records we don't want to limit
             // them in the outer scope, so handle it
             queryBuilder.setSelectQueryLimitOffset(query, standardizedOptions);
-
-            // build the count query
-            queryBuilder.buildSelectQuery(countQuery, joinTree);
         }
 
         this.setSelectQueryOrder(rootModel, query, orders);
