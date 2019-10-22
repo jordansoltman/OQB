@@ -608,8 +608,6 @@ export class QueryInterface {
         const model = this;
         const knex = this.knex;
 
-        console.log(knex.fn.now())
-
         if (node.model.softDeletes === true && node.includeSoftDeleted !== true && node.parent === null) {
             query.where(function() {
                 this.orWhereNull(`${node.tableAlias}.deleted_at`)
