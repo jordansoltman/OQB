@@ -18,8 +18,8 @@ export declare class Orm {
     private _queryInterface;
     private _knex;
     constructor(knexConfig: knex.Config);
-    readonly queryInterface: QueryInterface;
-    readonly knex: knex<any, any[]>;
+    get queryInterface(): QueryInterface;
+    get knex(): knex<any, any[]>;
     transaction(transactionWrapper: (transaction: knex.Transaction) => Promise<any>): Promise<any>;
     defineModel(tableName: string, columns: IColumnDefinitions, options: IModelOptions): typeof Model;
     associateAllModels(): void;

@@ -6,8 +6,8 @@ import { Orm } from './index';
 import { QueryInterface } from './query_interface';
 import { ForeignKey, Hook, IColumn, IColumnDefinitions, IDatabaseData, IDeleteOptions, IInsertOptions, IModelOptions, ISelectOptions, IUpdateOptions, PrimaryKey } from './types';
 export declare class Model {
-    static readonly queryInterface: QueryInterface;
-    static readonly knex: knex;
+    static get queryInterface(): QueryInterface;
+    static get knex(): knex;
     static tableName: string;
     static columns: {
         [name: string]: IColumn;
@@ -60,7 +60,7 @@ export declare class Model {
      */
     static count(options?: ISelectOptions): Promise<number>;
     protected static configureValidator(validator: Validator): void;
-    protected static readonly validator: Validator;
+    protected static get validator(): Validator;
     /**
      * Creates a has many relationship with the given model.
      *

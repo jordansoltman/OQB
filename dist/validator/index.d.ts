@@ -21,6 +21,6 @@ export declare class Validator {
     validate(data: IDatabaseData, group?: string | string[], options?: {
         properties?: string[];
     }): Promise<null | IValidationErrors>;
-    readonly set: ValidationTable;
+    get set(): ValidationTable;
     property(prop: string, constraints: (property: ValidationPropertyConstraintSet) => void, dependentProperties?: string[]): void;
 }

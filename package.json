@@ -1,6 +1,6 @@
 {
   "name": "jord-orm",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "",
   "main": "dist/orm/index.js",
   "scripts": {
