@@ -223,7 +223,8 @@ export class QueryInterface {
                 const subQuery = this.select(`${tableName}.*`).from(tableName).as(tableName);
                 queryBuilder.buildSelectSubQuery(subQuery, joinTree, true);
                 queryBuilder.setSelectQueryLimitOffset(subQuery, standardizedOptions);
-                queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
+                // FIXME: I'm not sure I can remove this, but it causes problems in hasMany relations sometimes
+                // queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
             });
 
         } else {
