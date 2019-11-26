@@ -8,21 +8,22 @@ const TEST_CONFIG = (process.env.NODE_ENV === 'travis') ?
     {
         client: 'mysql',
         connection: {
-            host: 'localhost',
-            user: 'root',
-            password: '1247133182',
-            database: 'ORM_TEST'
-        }
-    } : 
-    {
-        client: 'mysql',
-        connection: {
             host: '127.0.0.1',
             user: 'travis',
             password: '',
             database: 'ORM_TEST'
         }
-    }
+    } :
+    {
+        client: 'mysql',
+        connection: {
+            host: 'localhost',
+            user: 'root',
+            password: '1247133182',
+            database: 'ORM_TEST'
+        }
+    };
+    
 
 
 async function rebuildDatabase() {
