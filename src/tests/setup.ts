@@ -17,8 +17,8 @@ const TEST_CONFIG = (process.env.NODE_ENV === 'travis') ?
     {
         client: 'mysql',
         connection: {
-            host: 'localhost',
-            user: 'root',
+            host: '127.0.0.1',
+            user: 'travis',
             password: '',
             database: 'ORM_TEST'
         }
