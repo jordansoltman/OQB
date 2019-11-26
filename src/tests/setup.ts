@@ -3,15 +3,27 @@ import Knex from 'knex';
 import { Orm, DataType } from '../orm';
 import { Model } from '../orm/model';
 
-const TEST_CONFIG = {
-    client: 'mysql',
-    connection: {
-        host: 'localhost',
-        user: 'root',
-        password: '1247133182',
-        database: 'ORM_TEST'
+
+const TEST_CONFIG = (process.env.NODE_ENV === 'travis') ? 
+    {
+        client: 'mysql',
+        connection: {
+            host: 'localhost',
+            user: 'root',
+            password: '1247133182',
+            database: 'ORM_TEST'
+        }
+    } : 
+    {
+        client: 'mysql',
+        connection: {
+            host: 'localhost',
+            user: 'root',
+            password: '',
+            database: 'ORM_TEST'
+        }
     }
-};
+
 
 async function rebuildDatabase() {
     const config = { ...TEST_CONFIG.connection };
@@ -61,7 +73,7 @@ async function runMigrations() {
 
 export async function loadData() {
     const knex = Knex(TEST_CONFIG);
-    
+
     await knex('customer').insert([
         { id: 1, name: 'Jordan', active: true },
         { id: 2, name: 'Madelyn', active: true },

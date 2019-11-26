@@ -1,6 +1,9 @@
 services:
   - mysql
 
+env:
+  - NODE_ENV=travis
+
 before_script:
   - npm install
 
