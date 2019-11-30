@@ -207,13 +207,13 @@ export class QueryInterface {
         const whereAssociations = selectOptions.where ? this.getAssociationsFromWhere(selectOptions.where) : [];
 
         // get the associations that need to be preloaded from the orders
-        const orderAssociations = orders
-            .filter((order) => typeof order[0] !== 'string')
-            .map((order) => (order[0] as IRelatedColumnIdentifier).relation) as string[][];
+        // const orderAssociations = orders
+        //     .filter((order) => typeof order[0] !== 'string')
+        //     .map((order) => (order[0] as IRelatedColumnIdentifier).relation) as string[][];
 
         standardizedOptions = this.addIncludeInSubqueryOptionToRelations(
             standardizedOptions,
-            [...orderAssociations, ...whereAssociations]
+            whereAssociations
         );
 
         const [joinTree, definition, meta] = this.buildSelectJoinTree(rootModel, standardizedOptions);
@@ -223,7 +223,7 @@ export class QueryInterface {
         // Build the count query.
         const countQuery = this.knex.queryBuilder().count('* as count').from(tableName);
         // Check conditions of the count query
-        if (meta.hasMultiAssociation) {
+        if (meta.hasMultiAssociation || joinTree.required) {
             queryBuilder.buildSelectSubQuery(countQuery, joinTree);
         } else {
             queryBuilder.buildSelectQuery(countQuery, joinTree);
@@ -664,7 +664,7 @@ export class QueryInterface {
             for (const childNode of node.children) {
 
                 // We are only joining the required joins
-                if (!childNode.includeInSubquery || !childNode.required) { continue; }
+                if (!childNode.includeInSubquery && !childNode.required) { continue; }
 
                 const tableName = childNode.model.tableName;
 

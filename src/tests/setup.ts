@@ -1,7 +1,6 @@
 import mysql from 'mysql';
 import Knex from 'knex';
-import { Orm, DataType } from '../orm';
-import { Model } from '../orm/model';
+import { OQB, DataType, Model } from '../orm';
 
 
 const TEST_CONFIG = (process.env.NODE_ENV === 'travis') ? 
@@ -134,7 +133,7 @@ export async function resetDatabase() {
     await runMigrations();
 }
 
-export const orm = new Orm(TEST_CONFIG);
+export const orm = new OQB(TEST_CONFIG);
 
 class Customer extends Model { 
     public static associate() {

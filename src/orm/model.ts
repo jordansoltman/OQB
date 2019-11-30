@@ -7,7 +7,7 @@ import { Validator } from '../validator';
 import { IValidationErrors } from '../validator/errors';
 import { Association, BelongsToAssociation, BelongsToManyAssociation, HasManyAssocation, HasOneAssociation } from './assocations';
 import { DataType } from './constant';
-import { Orm } from './index'; // CIRCULAR DEPENDENCY
+import { OQB } from './index'; // CIRCULAR DEPENDENCY
 import { QueryInterface } from './query_interface';
 // tslint:disable-next-line:max-line-length
 import { ForeignKey, Hook, IColumn, IColumnDefinitions, IDatabaseData, IDeleteOptions, IInsertOptions, IModelOptions, IPrimaryKeyPairs, ISelectOptions, IUpdateOptions, IWhere, PrimaryKey } from './types';
@@ -40,7 +40,7 @@ export class Model {
     };
     public static columnNames: string[];
     public static primaryKeyColumnNames: string[];
-    public static orm: Orm;
+    public static orm: OQB;
     public static associations: { [key: string]: Association } = {};
     public static softDeletes: boolean;
     public static timeStamps: boolean;
@@ -51,7 +51,7 @@ export class Model {
     public static associate() { }
 
     // tslint:disable-next-line: no-shadowed-variable
-    public static init(orm: Orm, name: string, columns: IColumnDefinitions, options: IModelOptions) {
+    public static init(orm: OQB, name: string, columns: IColumnDefinitions, options: IModelOptions) {
         this.orm = orm;
         const defaultModelOptions: IModelOptions = {
             softDeletes: false,

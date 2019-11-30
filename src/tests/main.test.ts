@@ -26,6 +26,7 @@ describe('Find All Query Selection', () => {
         const [result, count] = await orm.models.customer.findAll({
             order: [['name', SortDirection.ASC]]
         });
+        expect(count).to.equal(4);
         expect(result.length).equal(4);
         expect(result[0].name).equal('Brendan');
     });
@@ -34,6 +35,7 @@ describe('Find All Query Selection', () => {
         const [result, count] = await orm.models.customer.findAll({
             order: [['name', SortDirection.DESC]]
         })
+        expect(count).to.equal(4);
         expect(result.length).equal(4);
         expect(result[0].name).equal('Michael');
     });
@@ -52,6 +54,8 @@ describe('Find All Query Selection', () => {
 
     it('get included belongs to many', async () => {
         const [result, count] = await orm.models.customer.findAll({ include: 'friends' });
+        expect(result).length(4);
+        expect(count).to.equal(4);
         expect(result[0].friends).length(2);
     });
 
@@ -59,6 +63,7 @@ describe('Find All Query Selection', () => {
         const [result, count] = await orm.models.customer.findAll({ 
             include: 'value'
         });
+        expect(count).to.equal(4);
         expect(result[0].value).to.not.equal(null);
         expect(result[2].value).to.equal(null);
     });
@@ -67,6 +72,7 @@ describe('Find All Query Selection', () => {
         const [result, count] = await orm.models.customer.findAll({
             include: ['orders']
         });
+        expect(count).to.equal(4);
         expect(result[2].orders.length).equal(3);
     });
 
@@ -85,8 +91,31 @@ describe('Find All Query Selection', () => {
                 [{relation: ['orders'], column: 'id'}, SortDirection.DESC]
             ]
         });
+        expect(count).to.equal(4);
         expect(result[0].orders[0].id).to.equal(8);
     });
+
+    it('sort double nested association', async () => {
+        const [result, count] = await orm.models.customer.findAll({
+            include: {
+                association: 'orders',
+                include: {
+                    association: 'customer',
+                    include: {
+                        association: 'orders'
+                    }
+                }
+            },
+            order: [
+                ['id', SortDirection.ASC],
+                [{ relation: ['orders'], column: 'id' }, SortDirection.DESC],
+                [{ relation: ['orders', 'customer', 'orders'], column: 'status' }, SortDirection.ASC],
+                [{ relation: ['orders', 'customer', 'orders'], column: 'id' }, SortDirection.ASC]
+            ]
+        })
+        expect(count).to.equal(4);
+        expect(result[0].orders[0].customer.orders[0].id).to.equal(1);
+    })
 
     it('sort double nested association with limit', async () => {
         const [result, count] = await orm.models.customer.findAll({
@@ -112,29 +141,49 @@ describe('Find All Query Selection', () => {
         expect(result[0].orders[0].customer.orders[0].id).to.equal(1);
     })
 
+    it('include required has one association', async () => {
+        const [result, count] = await orm.models.customer.findAll({
+            include: {
+                association: 'value',
+                required: true
+            }
+        });
+        expect(count).to.equal(2);
+        expect(result).length(2);
+    })
 
-    it('sort double nested association', async () => {
+    it('include required has many association', async () => {
         const [result, count] = await orm.models.customer.findAll({
             include: {
                 association: 'orders',
-                include: {
-                    association: 'customer',
-                    include: {
-                        association: 'orders'
-                    }
-                }
-            },
-            order: [
-                ['id', SortDirection.ASC],
-                [{ relation: ['orders'], column: 'id' }, SortDirection.DESC],
-                [{ relation: ['orders', 'customer', 'orders'], column: 'status' }, SortDirection.ASC],
-                [{ relation: ['orders', 'customer', 'orders'], column: 'id' }, SortDirection.ASC]
-            ]
+                required: true
+            }
         })
-        expect(count).to.equal(4);
-        expect(result[0].orders[0].customer.orders[0].id).to.equal(1);
+        expect(count).to.equal(3);
+        expect(result).length(3);
     })
 
+    it('include required belongs to many association', async() => {
+        const [result, count] = await orm.models.customer.findAll({
+            include: {
+                association: 'friends',
+                required: true
+            }
+        });
+        expect(count).to.equal(3);
+        expect(result).length(3);
+    })
 
+    it('include required has many association with limit', async () => {
+        const [result, count] = await orm.models.customer.findAll({
+            include: {
+                association: 'orders',
+                required: true
+            },
+            limit: 1
+        })
+        expect(count).to.equal(3);
+        expect(result).length(1);
+    })
 
 });

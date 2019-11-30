@@ -16,7 +16,7 @@ export interface IModels {
     [key: string]: typeof Model;
 }
 
-export class Orm {
+export class OQB {
 
     public models: IModels;
     private _queryInterface: QueryInterface;
@@ -55,3 +55,5 @@ export class Orm {
         });
     }
 }
+
+export * from './model';

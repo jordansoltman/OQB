@@ -1,4 +1,4 @@
-import { Orm } from '../orm';
+import { OQB } from '../orm';
 import { DatabaseValidator } from '../orm/database_validator';
 import { IDatabaseData } from '../orm/types';
 import { arrayIfNot } from '../util';
@@ -12,7 +12,7 @@ export class Validator {
     private validationProperties: ValidationProperties;
     private validationTable: ValidationTable;
 
-    constructor(orm: Orm) {
+    constructor(orm: OQB) {
         const databaseValidator = new DatabaseValidator(orm);
         this.validationProperties = new ValidationProperties(databaseValidator);
         this.validationTable = new ValidationTable(databaseValidator);

@@ -1,12 +1,12 @@
-import { Orm } from '.';
+import { OQB } from '.';
 import { arrayIfNot } from '../util';
 import { IWhere } from './types';
 
 export class DatabaseValidator {
 
-    private orm: Orm;
+    private orm: OQB;
 
-    constructor(orm: Orm) {
+    constructor(orm: OQB) {
         this.orm = orm;
     }
 
