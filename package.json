@@ -1,7 +1,7 @@
 {
-  "name": "jord-orm",
-  "version": "0.0.12",
-  "description": "",
+  "name": "oqb",
+  "version": "0.0.13",
+  "description": "Object Query Builder (OQB) makes it super simple to make complex queries that return nested objects without the overhead of a traditional ORM.",
   "main": "dist/orm/index.js",
   "scripts": {
     "test": "mocha -r ts-node/register src/tests/**/*.test.ts"

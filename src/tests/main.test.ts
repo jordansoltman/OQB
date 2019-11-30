@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import { resetDatabase, orm, loadData } from './setup';
 import { SortDirection } from '../orm/types';
+import { executionAsyncId } from 'async_hooks';
 
 
 
-beforeEach(async () => {
+before(async () => {
     await resetDatabase();
     await loadData();
 })
@@ -13,42 +14,7 @@ after(async() => {
     orm.knex.destroy();
 })
 
-describe('Query Selection', () => {
-    it('get associated values with where clause', async () => {
-        const [result, count] = await orm.models.customer.findAll({
-            log: true,
-            include: [{
-                association: 'orders',
-                where: {
-                    eq: ['status', 'SHIPPED']
-                },
-                include: {
-                    association: 'customer',
-                    include: {
-                        association: 'orders',
-                        where: {
-                            eq: ['status', 'SHIPPED']
-                        }
-                    }
-                }
-            }, {
-                association: 'companies',
-                where: {
-                    eq: ['id', 3]
-                }
-            }, {
-                association: 'friends',
-                where: {
-                    eq: ['id', 3]
-                },
-                include: ['orders']
-            }],
-            // order: [
-            //     [{ relation: ['orders'], column: 'id' }, SortDirection.DESC]
-            // ]
-        })
-        console.log();
-    })
+describe('Find All Query Selection', () => {
 
     it('can select all objects', async () => {
         const [result, count] = await orm.models.customer.findAll();
@@ -72,12 +38,103 @@ describe('Query Selection', () => {
         expect(result[0].name).equal('Michael');
     });
 
+    it('should ignore things that have been soft deleted by default', async () => {
+        const [result, count] = await orm.models.company.findAll();
+        expect(result).length(3);
+        expect(count).equal(3);
+    })
+
+    it('should include soft deleted entries when include soft delete when includeSoftDeleted flag is set', async () => {
+        const [result, count] = await orm.models.company.findAll({ includeSoftDeleted: true });
+        expect(result).length(4);
+        expect(count).equal(4);
+    });
+
+    it('get included belongs to many', async () => {
+        const [result, count] = await orm.models.customer.findAll({ include: 'friends' });
+        expect(result[0].friends).length(2);
+    });
+
+    it('get included has one', async () => {
+        const [result, count] = await orm.models.customer.findAll({ 
+            include: 'value'
+        });
+        expect(result[0].value).to.not.equal(null);
+        expect(result[2].value).to.equal(null);
+    });
+
     it('get included has many', async () => {
         const [result, count] = await orm.models.customer.findAll({
             include: ['orders']
         });
         expect(result[2].orders.length).equal(3);
     });
+
+    it('get multiple included things', async () => {
+        const [result, count] = await orm.models.customer.findAll({
+            include: ['companies', 'orders']
+        });
+        expect(result[0].orders).length(2);
+        expect(result[0].orders).length(2);
+    });
+
+    it('sort included association', async () => {
+        const [result, count] = await orm.models.customer.findAll({
+            include: ['orders'],
+            order: [
+                [{relation: ['orders'], column: 'id'}, SortDirection.DESC]
+            ]
+        });
+        expect(result[0].orders[0].id).to.equal(8);
+    });
+
+    it('sort double nested association with limit', async () => {
+        const [result, count] = await orm.models.customer.findAll({
+            include: {
+                association: 'orders',
+                include: {
+                    association: 'customer',
+                    include: {
+                        association: 'orders'
+                    }
+                }
+            },
+            order: [
+                ['id', SortDirection.ASC],
+                [{ relation: ['orders'], column: 'id' }, SortDirection.DESC],
+                [{ relation: ['orders', 'customer', 'orders'], column: 'status' }, SortDirection.ASC],
+                [{ relation: ['orders', 'customer', 'orders'], column: 'id' }, SortDirection.ASC]
+            ],
+            limit: 2,
+        })
+        expect(count).to.equal(4);
+        expect(result).length(2);
+        expect(result[0].orders[0].customer.orders[0].id).to.equal(1);
+    })
+
+
+    it('sort double nested association', async () => {
+        const [result, count] = await orm.models.customer.findAll({
+            include: {
+                association: 'orders',
+                include: {
+                    association: 'customer',
+                    include: {
+                        association: 'orders'
+                    }
+                }
+            },
+            order: [
+                ['id', SortDirection.ASC],
+                [{ relation: ['orders'], column: 'id' }, SortDirection.DESC],
+                [{ relation: ['orders', 'customer', 'orders'], column: 'status' }, SortDirection.ASC],
+                [{ relation: ['orders', 'customer', 'orders'], column: 'id' }, SortDirection.ASC]
+            ]
+        })
+        expect(count).to.equal(4);
+        expect(result[0].orders[0].customer.orders[0].id).to.equal(1);
+    })
+
 
 
 });

@@ -436,12 +436,12 @@ export class Model {
         }
 
         if (typeof foreignKey === 'string' && to.primaryKeyColumnNames.length > 1) {
-            throw new Error(`Has to relationship (${as}) from ${this.tableName} to ${to.tableName} requires a
+            throw new Error(`Has one relationship (${as}) from ${this.tableName} to ${to.tableName} requires a
             foreign key map because ${to.tableName} has a composite primary key.`);
         }
 
         const foreignKeyMap = typeof foreignKey === 'string' ?
-            { [to.primaryKeyColumnNames[0]]: foreignKey  } :
+            { [this.primaryKeyColumnNames[0]]: foreignKey  } :
             foreignKey;
 
         const assocation = new HasOneAssociation(to, foreignKeyMap);

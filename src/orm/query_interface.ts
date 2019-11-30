@@ -222,22 +222,27 @@ export class QueryInterface {
 
         // Build the count query.
         const countQuery = this.knex.queryBuilder().count('* as count').from(tableName);
-        if (joinTree.required || meta.hasMultiAssociation) {
+        // Check conditions of the count query
+        if (meta.hasMultiAssociation) {
             queryBuilder.buildSelectSubQuery(countQuery, joinTree);
         } else {
             queryBuilder.buildSelectQuery(countQuery, joinTree);
+        }
+
+        if (standardizedOptions.log) {
+            console.log("Count Query", countQuery.toString());
         }
 
         // Build the main query
         const query = this.knex.queryBuilder().options({ nestTables: '.' });
 
         // Determine if we need to build a sub query as well
-        if (joinTree.required || (standardizedOptions.limit && meta.hasMultiAssociation)) {
+        if (standardizedOptions.limit && meta.hasMultiAssociation) {
             query.from(function () {
                 const subQuery = this.select(`${tableName}.*`).from(tableName).as(tableName);
                 queryBuilder.buildSelectSubQuery(subQuery, joinTree);
                 queryBuilder.setSelectQueryLimitOffset(subQuery, standardizedOptions);
-                queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
+                // queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
             });
 
         } else {
@@ -252,7 +257,7 @@ export class QueryInterface {
 
         if (options.log === true) {
             // tslint:disable-next-line
-            console.log(query.toString());
+            console.log("Main Query", query.toString());
         }
 
         if (options.transaction) {
@@ -302,7 +307,21 @@ export class QueryInterface {
 
         // Call the recursive _buildJoinTree() method to complete the tree.
         this._buildSelectJoinTree(includeOptions, rootNode, definition, [rootTableName], meta);
+
+        this._determineFirstMultiRelationships(rootNode);
+
         return [rootNode, definition, meta];
+    }
+
+    // Look through a join node tree and determine if each relationship is the first multi-relationship
+    private _determineFirstMultiRelationships(node: IJoinTreeNode) {
+        if (node.multiAssociation) {
+            node.firstMultiAssociation = true;
+        } else if (node.children) {
+            for (const child of node.children) {
+                this._determineFirstMultiRelationships(child);
+            }
+        }
     }
 
     /**
@@ -418,13 +437,13 @@ export class QueryInterface {
                             model: assocation.through,
                             includeSoftDeleted: throughOptions.includeSoftDeleted === true,
                             multiAssociation: true,
-                            firstMultiAssociation: currentNode.firstMultiAssociation !== true,
                             keyMap: assocation.fromKeyMap,
                             where: throughOptions.where,
                             required: throughOptions.where !== undefined,
                             children: [],
                             tableAlias
                         };
+                        currentNode.associatedChildren[assocationName] = throughNode;
                         currentNode.children.push(throughNode);
                         currentNode = throughNode;
 
@@ -475,22 +494,21 @@ export class QueryInterface {
 
                     rootPath.push(assocationName);
 
-                    const multiAssociation = assocation instanceof HasManyAssocation ? true : false;
-
                     const newNode: IJoinTreeNode = {
                         parent: currentNode,
                         model: assocation.to,
                         // Only has many relationships will be multi-associations at this join
                         // Belongs to many is a multi-association on the through table
-                        multiAssociation: multiAssociation,
-                        firstMultiAssociation: currentNode.firstMultiAssociation !== true && multiAssociation,
+                        multiAssociation: assocation instanceof HasManyAssocation ? true : false,
                         keyMap: assocation.toKeyMap,
                         tableAlias: rootPath.join(TABLE_JOIN_STRING)
                     };
 
-                    node.associatedChildren[assocationName] = newNode;
-                    currentNode.children.push(newNode);
+                    if (!(assocation instanceof BelongsToManyAssociation)) {
+                        node.associatedChildren[assocationName] = newNode;
+                    }
 
+                    currentNode.children.push(newNode);
                     this._buildSelectJoinTree(childInclude, newNode, nextDefinition, rootPath, meta);
 
                 }
@@ -646,12 +664,12 @@ export class QueryInterface {
             for (const childNode of node.children) {
 
                 // We are only joining the required joins
-                if (!childNode.required && !childNode.includeInSubquery) { continue; }
+                if (!childNode.includeInSubquery || !childNode.required) { continue; }
 
                 const tableName = childNode.model.tableName;
 
                 // If it's a multi-association and the first one, we treat it differently
-                if (childNode.multiAssociation && childNode.firstMultiAssociation) {
+                if (childNode.firstMultiAssociation) {
                     query.whereExists((subQuery) => {
                         subQuery.select().from(`${tableName} AS ${childNode.tableAlias}`).where(function() {
                             for (const [rootColumn, joinColumn] of Object.entries(childNode.keyMap)) {

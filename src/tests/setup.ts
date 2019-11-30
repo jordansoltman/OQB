@@ -57,10 +57,16 @@ async function runMigrations() {
         table.string('name');
     });
 
+    await knex.schema.createTable('customer_value', (table) => {
+        table.integer('customer_id').unsigned().references('customer.id').primary();
+        table.integer('value');
+    })
+
     await knex.schema.createTable('company', (table) => {
         table.increments('id');
         table.string('name');
         table.integer('customer_id').unsigned().references('customer.id');
+        table.dateTime('deleted_at');
     });
 
     await knex.schema.createTable('order', (table) => {
@@ -88,12 +94,17 @@ export async function loadData() {
         { id: 4, name: 'Michael', active: true },
     ]);
 
-    await knex('company').insert([
-        { id: 1, name: 'Walmart', customer_id: 1 },
-        { id: 2, name: 'Target', customer_id: 1 },
-        { id: 3, name: 'Walgreens', customer_id: 2 },
-        { id: 4, name: 'Amazon', customer_id: 3 },
+    await knex('customer_value').insert([
+        { customer_id: 3, value: 12 },
+        { customer_id: 2, value: 15 }
     ])
+
+    await knex('company').insert([
+        { id: 1, name: 'Walmart', customer_id: 1, deleted_at: null },
+        { id: 2, name: 'Target', customer_id: 1, deleted_at: null },
+        { id: 3, name: 'Walgreens', customer_id: 2, deleted_at: null },
+        { id: 4, name: 'Amazon', customer_id: 3, deleted_at: new Date(2018) },
+    ]);
 
     await knex('order').insert([
         { id: 1, status: 'COMPLETE', order_date: new Date(2019, 10, 3, 10, 5), customer_id: 1 },
@@ -127,6 +138,11 @@ export const orm = new Orm(TEST_CONFIG);
 
 class Customer extends Model { 
     public static associate() {
+        Customer.hasOne({
+            as: 'value',
+            foreignKey: 'customer_id',
+            to: this.orm.models.customer_value
+        });
         Customer.hasMany({
             as: 'orders',
             foreignKey: 'customer_id',
@@ -181,13 +197,22 @@ class Company extends Model {
 Company.init(orm, 'company', {
     id: { primary: true, type: DataType.INTEGER, nullable: false },
     name: { type: DataType.STRING, nullable: false },
-    customer_id: { type: DataType.INTEGER, nullable: false }
-}, { timeStamps: false });
+    customer_id: { type: DataType.INTEGER, nullable: false },
+}, { timeStamps: false, softDeletes: true });
 
 class Friend extends Model {}
 Friend.init(orm, 'friend', {
     first_customer_id: { primary: true, type: DataType.INTEGER, nullable: false },
     second_customer_id: { primary: true, type: DataType.INTEGER, nullable: false }
 }, { timeStamps: false });
+
+class CustomerValue extends Model {}
+CustomerValue.init(orm, 'customer_value', {
+    customer_id: { primary: true, nullable: false, type: DataType.INTEGER },
+    value: { type: DataType.INTEGER }
+}, { timeStamps: false });
+
+
+
 
 orm.associateAllModels();
