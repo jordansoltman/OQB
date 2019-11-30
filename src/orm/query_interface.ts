@@ -39,9 +39,21 @@ interface IJoinTreeNode {
     multiAssociation?: boolean;
 
     /**
+     * True if this association is the first multi association in this branch
+     */
+    firstMultiAssociation?: boolean;
+
+    /**
      * The models that this node is associated with.
      */
     children?: IJoinTreeNode[];
+
+    /**
+     * Associated children. This will NOT include through tables
+     */
+    associatedChildren?: {
+        [associationName: string]: IJoinTreeNode
+    }
 
     /**
      * If this model should ignore soft deletes. This means that a where clause
@@ -179,11 +191,12 @@ export class QueryInterface {
     {
 
         const tableName = rootModel.tableName;
-
         const selectOptions = {...options};
+        const orders = selectOptions.order ?? [];
 
-        const orders = selectOptions.order ? selectOptions.order : [];
-
+        // Includes can be defined in a myriad of formats including a string,
+        // array of strings, or objects. We want our options to be standardized by turning all of the 
+        // includes into objects.
         selectOptions.include =
             this.standardizeSelectInclude(selectOptions.include);
 
@@ -192,6 +205,7 @@ export class QueryInterface {
         // If a complex where statement exists we need to load that table into the subquery
         // so that we can run the query against it
         const whereAssociations = selectOptions.where ? this.getAssociationsFromWhere(selectOptions.where) : [];
+
         // get the associations that need to be preloaded from the orders
         const orderAssociations = orders
             .filter((order) => typeof order[0] !== 'string')
@@ -209,7 +223,7 @@ export class QueryInterface {
         // Build the count query.
         const countQuery = this.knex.queryBuilder().count('* as count').from(tableName);
         if (joinTree.required || meta.hasMultiAssociation) {
-            queryBuilder.buildSelectSubQuery(countQuery, joinTree, true);
+            queryBuilder.buildSelectSubQuery(countQuery, joinTree);
         } else {
             queryBuilder.buildSelectQuery(countQuery, joinTree);
         }
@@ -221,7 +235,7 @@ export class QueryInterface {
         if (joinTree.required || (standardizedOptions.limit && meta.hasMultiAssociation)) {
             query.from(function () {
                 const subQuery = this.select(`${tableName}.*`).from(tableName).as(tableName);
-                queryBuilder.buildSelectSubQuery(subQuery, joinTree, true);
+                queryBuilder.buildSelectSubQuery(subQuery, joinTree);
                 queryBuilder.setSelectQueryLimitOffset(subQuery, standardizedOptions);
                 queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
             });
@@ -364,6 +378,7 @@ export class QueryInterface {
             if (includeOptions.include) {
 
                 node.children = [];
+                node.associatedChildren = {};
 
                 for (const childInclude of Object.values(includeOptions.include) as ISelectIncludedTableOptions[]) {
 
@@ -390,6 +405,8 @@ export class QueryInterface {
                     let nextDefinition: any = {};
                     const throughDefinition: any = {};
 
+                    // Belongs to many associations are handled specially since we need to add another node
+                    // for the through relation
                     if (assocation instanceof BelongsToManyAssociation) {
 
                         rootPath.push('through+' + assocationName);
@@ -401,6 +418,7 @@ export class QueryInterface {
                             model: assocation.through,
                             includeSoftDeleted: throughOptions.includeSoftDeleted === true,
                             multiAssociation: true,
+                            firstMultiAssociation: currentNode.firstMultiAssociation !== true,
                             keyMap: assocation.fromKeyMap,
                             where: throughOptions.where,
                             required: throughOptions.where !== undefined,
@@ -457,16 +475,20 @@ export class QueryInterface {
 
                     rootPath.push(assocationName);
 
+                    const multiAssociation = assocation instanceof HasManyAssocation ? true : false;
+
                     const newNode: IJoinTreeNode = {
                         parent: currentNode,
                         model: assocation.to,
                         // Only has many relationships will be multi-associations at this join
                         // Belongs to many is a multi-association on the through table
-                        multiAssociation: assocation instanceof HasManyAssocation ? true : false,
+                        multiAssociation: multiAssociation,
+                        firstMultiAssociation: currentNode.firstMultiAssociation !== true && multiAssociation,
                         keyMap: assocation.toKeyMap,
                         tableAlias: rootPath.join(TABLE_JOIN_STRING)
                     };
 
+                    node.associatedChildren[assocationName] = newNode;
                     currentNode.children.push(newNode);
 
                     this._buildSelectJoinTree(childInclude, newNode, nextDefinition, rootPath, meta);
@@ -601,8 +623,7 @@ export class QueryInterface {
 
     private buildSelectSubQuery(
         query: knexLib.QueryBuilder,
-        node: IJoinTreeNode,
-        firstMulti: boolean)
+        node: IJoinTreeNode)
     {
 
         const model = this;
@@ -630,7 +651,7 @@ export class QueryInterface {
                 const tableName = childNode.model.tableName;
 
                 // If it's a multi-association and the first one, we treat it differently
-                if (childNode.multiAssociation && firstMulti) {
+                if (childNode.multiAssociation && childNode.firstMultiAssociation) {
                     query.whereExists((subQuery) => {
                         subQuery.select().from(`${tableName} AS ${childNode.tableAlias}`).where(function() {
                             for (const [rootColumn, joinColumn] of Object.entries(childNode.keyMap)) {
@@ -645,7 +666,7 @@ export class QueryInterface {
                             }
                         })
                         .limit(1);
-                        model.buildSelectSubQuery(subQuery, childNode, false);
+                        model.buildSelectSubQuery(subQuery, childNode);
                     });
                 } else {
                     // If it's just needed for order then it is a left join.
@@ -661,7 +682,7 @@ export class QueryInterface {
                             });
                         }
                     });
-                    model.buildSelectSubQuery(query, childNode, firstMulti);
+                    model.buildSelectSubQuery(query, childNode);
                 }
             }
         }

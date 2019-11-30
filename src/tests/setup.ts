@@ -57,6 +57,12 @@ async function runMigrations() {
         table.string('name');
     });
 
+    await knex.schema.createTable('company', (table) => {
+        table.increments('id');
+        table.string('name');
+        table.integer('customer_id').unsigned().references('customer.id');
+    });
+
     await knex.schema.createTable('order', (table) => {
         table.increments('id');
         table.string('status');
@@ -64,10 +70,10 @@ async function runMigrations() {
         table.integer('customer_id').unsigned().references('customer.id');
     });
 
-    await knex.schema.createTable('customer_status', (table) => {
-        table.increments('customer_id').primary();
-        table.string('status')
-    });
+    await knex.schema.createTable('friend', (table) => {
+        table.integer('first_customer_id').unsigned().references('customer.id');
+        table.integer('second_customer_id').unsigned().references('second_customer_id');
+    })
 
     knex.destroy();
 }
@@ -82,6 +88,13 @@ export async function loadData() {
         { id: 4, name: 'Michael', active: true },
     ]);
 
+    await knex('company').insert([
+        { id: 1, name: 'Walmart', customer_id: 1 },
+        { id: 2, name: 'Target', customer_id: 1 },
+        { id: 3, name: 'Walgreens', customer_id: 2 },
+        { id: 4, name: 'Amazon', customer_id: 3 },
+    ])
+
     await knex('order').insert([
         { id: 1, status: 'COMPLETE', order_date: new Date(2019, 10, 3, 10, 5), customer_id: 1 },
         { id: 2, status: 'SHIPPED', order_date: new Date(2019, 10, 6, 6, 5), customer_id: 1 },
@@ -93,10 +106,14 @@ export async function loadData() {
         { id: 8, status: 'PLACED', order_date: new Date(2019, 10, 3, 10, 5), customer_id: 3 },
     ]);
 
-    await knex('customer_status').insert([
-        { customer_id: 3, status: 'ACTIVE' },
-        { customer_id: 4, status: 'SUSPENDED' }
-    ]);
+    await knex('friend').insert([
+        { first_customer_id: 1, second_customer_id: 2 },
+        { first_customer_id: 1, second_customer_id: 3 },
+        { first_customer_id: 2, second_customer_id: 3 },
+        { first_customer_id: 2, second_customer_id: 4 },
+        { first_customer_id: 3, second_customer_id: 3 }
+    ])
+
 
     knex.destroy();
 }
@@ -108,7 +125,27 @@ export async function resetDatabase() {
 
 export const orm = new Orm(TEST_CONFIG);
 
-class Customer extends Model { }
+class Customer extends Model { 
+    public static associate() {
+        Customer.hasMany({
+            as: 'orders',
+            foreignKey: 'customer_id',
+            to: this.orm.models.order
+        });
+        Customer.hasMany({
+            as: 'companies',
+            foreignKey: 'customer_id',
+            to: this.orm.models.company
+        });
+        Customer.belongsToMany({
+            to: this.orm.models.customer,
+            toKey: 'second_customer_id',
+            fromKey: 'first_customer_id',
+            through: this.orm.models.friend,
+            as: 'friends'
+        });
+    }
+}
 Customer.init(orm, 'customer', {
     id: { primary: true, type: DataType.INTEGER, nullable: false },
     name: { primary: false, type: DataType.STRING, nullable: false },
@@ -130,5 +167,27 @@ Order.init(orm, 'order', {
     order_date: { primary: false, type: DataType.DATETIME, nullable: false },
     customer_id: { primary: false, type: DataType.INTEGER, nullable: false }
 }, { timeStamps: false })
+
+
+class Company extends Model {
+    public static associate() {
+        Company.belongsTo({
+            to: this.orm.models.customer,
+            foreignKey: 'customer_id',
+            as: 'customer'
+        });
+    }
+}
+Company.init(orm, 'company', {
+    id: { primary: true, type: DataType.INTEGER, nullable: false },
+    name: { type: DataType.STRING, nullable: false },
+    customer_id: { type: DataType.INTEGER, nullable: false }
+}, { timeStamps: false });
+
+class Friend extends Model {}
+Friend.init(orm, 'friend', {
+    first_customer_id: { primary: true, type: DataType.INTEGER, nullable: false },
+    second_customer_id: { primary: true, type: DataType.INTEGER, nullable: false }
+}, { timeStamps: false });
 
 orm.associateAllModels();
