@@ -80,4 +80,37 @@ Models are selected using the `findAll()` method. For example:
 await customers = oqb.models.customer.findAll();
 ```
 
-**...docs to be continued***
+Find all takes an options argument that allows us to refine our search. 
+
+```
+{
+    order: [
+        [<column name>, SortDirection] | 
+        [{ relations: [<relation name>], column: <column name>}, SortDirection]
+    ],
+    where: {
+        eq | neq | like | in | lt | lte | gt | gte: [<column name>, <value>] |
+        or | and: [
+            ...,
+        ]
+    },
+    limit: <number>,
+    offset: <number>,
+    includeSoftDeleted: <boolean>,
+    attributes: [<attribute or association>],
+    excludeAttributes: [<attribute or association>],
+    include: <association> | [<association>] | {
+        association: <name>
+        where: ...,
+        required: <boolean> - true if there is a where clause, otherwise false
+        include: ...,
+        includeSoftDeleted: <boolean>
+        attributes: [<attribute or association>],
+        excludeAttributes: [<attribute or association>],
+        through: {
+            where: ...,
+            includeSoftDeleted: <boolean>
+        }
+    }
+}
+```
