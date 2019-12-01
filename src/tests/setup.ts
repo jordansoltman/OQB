@@ -140,23 +140,23 @@ class Customer extends Model {
         Customer.hasOne({
             as: 'value',
             foreignKey: 'customer_id',
-            to: this.orm.models.customer_value
+            to: this.oqb.models.customer_value
         });
         Customer.hasMany({
             as: 'orders',
             foreignKey: 'customer_id',
-            to: this.orm.models.order
+            to: this.oqb.models.order
         });
         Customer.hasMany({
             as: 'companies',
             foreignKey: 'customer_id',
-            to: this.orm.models.company
+            to: this.oqb.models.company
         });
         Customer.belongsToMany({
-            to: this.orm.models.customer,
+            to: this.oqb.models.customer,
             toKey: 'second_customer_id',
             fromKey: 'first_customer_id',
-            through: this.orm.models.friend,
+            through: this.oqb.models.friend,
             as: 'friends'
         });
     }
@@ -170,7 +170,7 @@ Customer.init(orm, 'customer', {
 class Order extends Model {
     public static associate() {
         Order.belongsTo({
-            to: this.orm.models.customer,
+            to: this.oqb.models.customer,
             foreignKey: 'customer_id',
             as: 'customer'
         });
@@ -187,7 +187,7 @@ Order.init(orm, 'order', {
 class Company extends Model {
     public static associate() {
         Company.belongsTo({
-            to: this.orm.models.customer,
+            to: this.oqb.models.customer,
             foreignKey: 'customer_id',
             as: 'customer'
         });

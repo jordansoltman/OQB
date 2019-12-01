@@ -27,11 +27,11 @@ const nh = hydration();
 export class Model {
 
     public static get queryInterface(): QueryInterface {
-        return this.orm.queryInterface;
+        return this.oqb.queryInterface;
     }
 
     public static get knex(): knex {
-        return this.orm.knex;
+        return this.oqb.knex;
     }
 
     public static tableName: string;
@@ -40,7 +40,7 @@ export class Model {
     };
     public static columnNames: string[];
     public static primaryKeyColumnNames: string[];
-    public static orm: OQB;
+    public static oqb: OQB;
     public static associations: { [key: string]: Association } = {};
     public static softDeletes: boolean;
     public static timeStamps: boolean;
@@ -52,7 +52,7 @@ export class Model {
 
     // tslint:disable-next-line: no-shadowed-variable
     public static init(orm: OQB, name: string, columns: IColumnDefinitions, options: IModelOptions) {
-        this.orm = orm;
+        this.oqb = orm;
         const defaultModelOptions: IModelOptions = {
             softDeletes: false,
             timeStamps: true
@@ -94,7 +94,7 @@ export class Model {
 
         // Build the actual model
         // const model = class extends Model { };
-        this.orm = orm;
+        this.oqb = orm;
         this.tableName = name;
         this.columns = columnObjects;
         this.columnNames = Object.keys(columns);
@@ -303,7 +303,7 @@ export class Model {
     protected static configureValidator(validator: Validator) { }
 
     protected static get validator(): Validator {
-        const validator = new Validator(this.orm);
+        const validator = new Validator(this.oqb);
         this.configureValidator(validator);
         return validator;
     }
