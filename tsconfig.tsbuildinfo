@@ -422,8 +422,8 @@
         "signature": "49565750e92f39a8be41fe1fb1b5b604ae483d4c76fa520df0926baeb1483fec"
       },
       "./src/orm/index.ts": {
-        "version": "b9ce3db0c6945961b790e9a662e0065a8a848ef307ca8d38586b839de480fb8f",
-        "signature": "0726709f80ddcbff5c7c4c8cf7a2aff6c4c24ba50b74025ae95b2b4afc22a7f2"
+        "version": "e8cd537aa236f18f0a55c06f8c76164ac413f57560de3cae88c28faf3b48fb4a",
+        "signature": "1526e87c8a36bec6590b64d25485c6bcccb81f6656d6008bd1213a5b59ffc7f8"
       },
       "./src/orm/database_validator.ts": {
         "version": "f5a60e9fe61b8048a431eaf6c5c7c1b9cb96139094b966fdb16daa62a277ace6",
@@ -458,7 +458,7 @@
         "signature": "3be48f29e2e0567084170f78a5b4a10e52a073bf8fc6d1128bd48181bcb33ca4"
       },
       "./src/orm/model.ts": {
-        "version": "64fd30429818f8dcc8ed21f8cc91cb80b67a1c875f94fe86ea388a393fe4de01",
+        "version": "06e10a7f1483a92d7bcd0d1d79f862d0194ee3fff690a7eeb354a71516f99a7a",
         "signature": "84e2582a2c57459b1d602fc25c3cc691c90cb247d8e4c2e14330ca5190a8c82f"
       },
       "./src/orm/assocations.ts": {
@@ -2419,9 +2419,9 @@
       "./src/orm/index.ts": [
         "./src/orm/constant.ts",
         "./src/orm/model.ts",
+        "./src/orm/types.ts",
         "./node_modules/knex/types/index.d.ts",
-        "./src/orm/query_interface.ts",
-        "./src/orm/types.ts"
+        "./src/orm/query_interface.ts"
       ],
       "./src/orm/database_validator.ts": [
         "./src/orm/index.ts"
@@ -2599,24 +2599,24 @@
       "./src/orm/hydration.ts",
       "./src/orm/constant.ts",
       "./node_modules/@types/pluralize/index.d.ts",
-      "./src/orm/types.ts",
-      "./src/orm/query_interface.ts",
-      "./src/orm/index.ts",
-      "./src/orm/database_validator.ts",
       "./src/validator/errors.ts",
       "./node_modules/@types/validator/index.d.ts",
+      "./node_modules/@types/chai/index.d.ts",
+      "./node_modules/@types/mysql/index.d.ts",
+      "./node_modules/@types/mocha/index.d.ts",
+      "./src/orm/index.ts",
+      "./src/tests/setup.ts",
+      "./src/orm/model.ts",
+      "./src/validator/index.ts",
+      "./src/orm/database_validator.ts",
+      "./src/orm/types.ts",
+      "./src/orm/query_interface.ts",
       "./src/validator/types.ts",
       "./src/validator/property_constraint_set.ts",
       "./src/validator/properties.ts",
       "./src/validator/table.ts",
-      "./src/validator/index.ts",
       "./src/orm/assocations.ts",
-      "./node_modules/@types/chai/index.d.ts",
-      "./node_modules/@types/mysql/index.d.ts",
-      "./src/tests/setup.ts",
-      "./src/tests/main.test.ts",
-      "./node_modules/@types/mocha/index.d.ts",
-      "./src/orm/model.ts"
+      "./src/tests/main.test.ts"
     ]
   },
   "version": "3.7.2"

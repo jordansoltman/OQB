@@ -43,4 +43,6 @@ class OQB {
 }
 exports.OQB = OQB;
 __export(require("./model"));
+var types_1 = require("./types");
+exports.SortDirection = types_1.SortDirection;
 //# sourceMappingURL=index.js.map

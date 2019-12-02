@@ -18,14 +18,6 @@ const validator_1 = require("../validator");
 const assocations_1 = require("./assocations");
 const constant_1 = require("./constant");
 const nh = hydration_1.default();
-// nh.registerType(DataType.BOOLEAN, (value) => {
-//     console.log(value);
-//     return value;
-// });
-// nh.registerType(DataType.DATETIME, (value) => {
-//     console.log(value);
-//     return value;
-// });
 class Model {
     static get queryInterface() {
         return this.oqb.queryInterface;

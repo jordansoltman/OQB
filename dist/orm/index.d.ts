@@ -25,3 +25,4 @@ export declare class OQB {
     associateAllModels(): void;
 }
 export * from './model';
+export { SortDirection } from './types';
