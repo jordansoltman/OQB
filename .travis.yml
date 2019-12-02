@@ -1,11 +1,16 @@
 services:
-  - mysql
-
+- mysql
 env:
-  - NODE_ENV=travis
-
+- NODE_ENV=travis
 before_script:
-  - npm install
-
+- npm install
 script:
-  - npm run test
+- npm run test
+deploy:
+  provider: npm
+  email: me@jordansoltman.com
+  api_key:
+    secure: Qv41MChS0SI+mOGvV9hc70u1cPy9BnA2ijkcJAf68xoDBElQOs3b/Urwo6AsJnTwzgcQZ447RTeCI9L0WIXXSQJ+dTINGMZ1aSOr0U60nvrutM4TxNV2u/1mYwjvKjKt4mrO6S1F7m9vUFjMeGKp8tFzRKE2alvJ1zMzS3QqSjvYKdzCsBPPzpKztyTcIgE+nzc+ESV2O2/otL3o4f9cNjmQ+0gLwtwr1CIWntbIHBVsxddoA5IG+18Kmkl3Z+kiXvsbGrp0yA4Io0igLXz3kgQaf0RWPvBuyEi4TWuE8ZgUxDlhWi0ZG/rm/kETm9WrwCn6Q6PcO3xnK4OrAwt4GfBK9dtuZGvgcM8/oZYgkHapGUO5tSGD1gQ7lLbzKCuh5GPKYiug7wXigwIpT01S+z/1cYMi6jcBAfrRn6fe9z6xfSuMGBeuO4Mo4t/gOu0L2cswG2L78hlb1f0cGAQkUwjZnhz6FdTOKI1+6jXFxHlFKo/BKGIPEpJYc4qIMpzALrBKMdWhaZ35/xoTwM5F6Jl2zR2ejuiqg3Ex5w/Der1ycrnhne7xAUONzvtLTPykg9ZRoegcHVMWVEV+4IPEbYXt8ERFkdLTqfwBw/rezz1MBTQnEYH56BeKPNP0DX60ebkpFOhJ5Y7aLsrA0cjL7YIhhaGoZHUgj60Jbtm8tpg=
+  on:
+    tags: true
+    repo: jordansoltman/OQB
