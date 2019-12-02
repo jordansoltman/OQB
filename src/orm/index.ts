@@ -57,3 +57,4 @@ export class OQB {
 }
 
 export * from './model';
+export { SortDirection } from './types'

@@ -6,20 +6,11 @@ before_script:
 - npm install
 script:
 - npm run test
-jobs:
-  include:
-    - stage: npm release
-      if: tag IS present
-      node_js: "8"
-      script: npx tsc
-      before_deploy:
-        - cd dist
-      deploy:
-        provider: npm
-        email: me@jordansoltman.com
-        api_key:
-          secure: YNCNYueijwD4qaPvlUcqyKwS6lcS4gnQAt/PDgKhKA8Z3kx6/95C6iRB1lZp/7IWoVK2tSUyRTIA2FdRd6gND8+i1NifwE8y5ESQXVNjAVJRH1/niLUAxyds/kjtHwHZVWqxjY81BmBoPXEqry3itP3fF+afD/ucagQJ+jjAaqGvAdfc//JVRwoJTPamlscJC35M3ZnpfQE+hLs56AtJmJmZR6uCBPT7rDe62m/gVRQf6k3Dpik4XEJRgDrzrEZGMtBTiG5X9mNBSC40Ip76KCkV5hGMKpV8da0DL1v/n8RhYThXg4NnD3BjJ2+Ld+5Dog3cvcynZar8VpWzKgFJFi4paDu6mCF/Hj5NqUdm/Su1XmiRGFZCWsI2rnVyX7kkjXR40W3kRh5CuhIXAerB+S/7PSHJb0V6wu1YqyULn6PW8wyK/Sh2GJe1EoO3fMhZOEcIlGqp7jRi/o1X4IQ2p2k3krHDDd+bfMJjw2L3Vbu8QzpsZWvFhOESIiKqsXFVYqHxIQOyOA86BWfIykTfGV7ACnvVICEzq9k79gXg3NHl2nqtkdBrP1c9AFDp34MT2RpLiUgwaGUU7oZQ2/tNI46FWTpjcmKTgr5+pUDeNgZJt5yreJjuZKf4OZluAWckCO43tNXnCIKsTMwYzpl7EnF/VKTY99oqg95zyuefofU=
-        on:
-          tags: true
-          repo: jordansoltman/OQB
-
+deploy:
+  provider: npm
+  email: me@jordansoltman.com
+  api_key:
+    secure: YNCNYueijwD4qaPvlUcqyKwS6lcS4gnQAt/PDgKhKA8Z3kx6/95C6iRB1lZp/7IWoVK2tSUyRTIA2FdRd6gND8+i1NifwE8y5ESQXVNjAVJRH1/niLUAxyds/kjtHwHZVWqxjY81BmBoPXEqry3itP3fF+afD/ucagQJ+jjAaqGvAdfc//JVRwoJTPamlscJC35M3ZnpfQE+hLs56AtJmJmZR6uCBPT7rDe62m/gVRQf6k3Dpik4XEJRgDrzrEZGMtBTiG5X9mNBSC40Ip76KCkV5hGMKpV8da0DL1v/n8RhYThXg4NnD3BjJ2+Ld+5Dog3cvcynZar8VpWzKgFJFi4paDu6mCF/Hj5NqUdm/Su1XmiRGFZCWsI2rnVyX7kkjXR40W3kRh5CuhIXAerB+S/7PSHJb0V6wu1YqyULn6PW8wyK/Sh2GJe1EoO3fMhZOEcIlGqp7jRi/o1X4IQ2p2k3krHDDd+bfMJjw2L3Vbu8QzpsZWvFhOESIiKqsXFVYqHxIQOyOA86BWfIykTfGV7ACnvVICEzq9k79gXg3NHl2nqtkdBrP1c9AFDp34MT2RpLiUgwaGUU7oZQ2/tNI46FWTpjcmKTgr5+pUDeNgZJt5yreJjuZKf4OZluAWckCO43tNXnCIKsTMwYzpl7EnF/VKTY99oqg95zyuefofU=
+  on:
+    tags: true
+    repo: jordansoltman/OQB
