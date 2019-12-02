@@ -7,7 +7,7 @@ before_script:
 script:
 - npm run test
 deploy:
-  skip_cleanup: true
+  cleanup: false
   provider: npm
   email: me@jordansoltman.com
   api_key:
