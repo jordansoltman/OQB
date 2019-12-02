@@ -1,6 +1,6 @@
 {
     "name": "oqb",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Object Query Builder (OQB) makes it super simple to make complex queries that return nested objects without the overhead of a traditional ORM.",
     "main": "dist/orm/index.js",
     "scripts": {
