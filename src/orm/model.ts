@@ -14,16 +14,6 @@ import { ForeignKey, Hook, IColumn, IColumnDefinitions, IDatabaseData, IDeleteOp
 
 const nh = hydration();
 
-// nh.registerType(DataType.BOOLEAN, (value) => {
-//     console.log(value);
-//     return value;
-// });
-
-// nh.registerType(DataType.DATETIME, (value) => {
-//     console.log(value);
-//     return value;
-// });
-
 export class Model {
 
     public static get queryInterface(): QueryInterface {
