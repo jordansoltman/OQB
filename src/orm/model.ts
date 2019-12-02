@@ -1,7 +1,7 @@
 import knex = require('knex');
 import * as _ from 'lodash';
 import { DateTime } from 'luxon';
-import hydration from 'nesthydrationjs';
+import hydration from './hydration';
 import { arrayIfNot } from '../util';
 import { Validator } from '../validator';
 import { IValidationErrors } from '../validator/errors';

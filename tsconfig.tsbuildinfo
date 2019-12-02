@@ -381,9 +381,29 @@
         "version": "2e3ecf70a6141d644cdc7292d6ee7e855c1646a3c9cf89e4f11ad0f8067fd288",
         "signature": "2e3ecf70a6141d644cdc7292d6ee7e855c1646a3c9cf89e4f11ad0f8067fd288"
       },
-      "./node_modules/nesthydrationjs/lib/nesthydrationjs.d.ts": {
-        "version": "12d0786db350449d36a8d6059d0f39e7009540f60aad1ac1636786cf882638f8",
-        "signature": "12d0786db350449d36a8d6059d0f39e7009540f60aad1ac1636786cf882638f8"
+      "./node_modules/@types/lodash.isarray/index.d.ts": {
+        "version": "7362d3110fb80fbefd2a5064c5740c7722d2fe85d193e8ef6a7a0c139ab82f7f",
+        "signature": "7362d3110fb80fbefd2a5064c5740c7722d2fe85d193e8ef6a7a0c139ab82f7f"
+      },
+      "./node_modules/@types/lodash.isfunction/index.d.ts": {
+        "version": "868ce5f4de7877e493f89b7308efdba22efa2f07c31ce2c9eb4a8aad44429e1c",
+        "signature": "868ce5f4de7877e493f89b7308efdba22efa2f07c31ce2c9eb4a8aad44429e1c"
+      },
+      "./node_modules/@types/lodash.isplainobject/index.d.ts": {
+        "version": "93d9b84aa831589b823cd4cfea38bc04ac9d78aea4fb798901f5f3cf0508845b",
+        "signature": "93d9b84aa831589b823cd4cfea38bc04ac9d78aea4fb798901f5f3cf0508845b"
+      },
+      "./node_modules/@types/lodash.keys/index.d.ts": {
+        "version": "be0ea12ec351aa47205c44609a8da7f8a2fa06e30cb1f713e1c65aae63a22a17",
+        "signature": "be0ea12ec351aa47205c44609a8da7f8a2fa06e30cb1f713e1c65aae63a22a17"
+      },
+      "./node_modules/@types/lodash.values/index.d.ts": {
+        "version": "31f6070cf1b4cadccfc4c27151e031e3a268a6434c6dea8d94b2f4fef5b987cb",
+        "signature": "31f6070cf1b4cadccfc4c27151e031e3a268a6434c6dea8d94b2f4fef5b987cb"
+      },
+      "./src/orm/hydration.ts": {
+        "version": "4141650e34e0b5752a023e7e331278e012694685f2af7a05283b1ec35d6997b8",
+        "signature": "d87eb239cffa5a28f6ea69372f3c7d0e5d919730ec99e72c0a669938b67286a4"
       },
       "./src/orm/constant.ts": {
         "version": "e1db2d946f137651673541cd3bc085f9681b5ce452d843e8f8c5497d9fc330d8",
@@ -398,16 +418,16 @@
         "signature": "72edda053c7b15f08cf71308560268f5a6d8f8d855289da52696c10b73ae0225"
       },
       "./src/orm/query_interface.ts": {
-        "version": "490324bb0ca598e581967f1d1c4eb916eddbb022aaf51280e3a3e44cd464fd7a",
-        "signature": "9048c530e3143ea405d87a46e51ecea06b9ea5d7b667016466ce3e50e720e380"
+        "version": "681d9fa41c66bf22e595807dd067ce08b25d022f26c1939735577478441d4833",
+        "signature": "49565750e92f39a8be41fe1fb1b5b604ae483d4c76fa520df0926baeb1483fec"
       },
       "./src/orm/index.ts": {
-        "version": "57be447e8ecd38838a1553d3689cb2ebb9fe0ad2f8a8e29071a2b3d1474c95f6",
-        "signature": "5563f4bd111a7fe0116625d1a953fb1f25c5bd58e7cbeba7fc8b62189cc5dc7f"
+        "version": "b9ce3db0c6945961b790e9a662e0065a8a848ef307ca8d38586b839de480fb8f",
+        "signature": "0726709f80ddcbff5c7c4c8cf7a2aff6c4c24ba50b74025ae95b2b4afc22a7f2"
       },
       "./src/orm/database_validator.ts": {
-        "version": "74001d179d16584eba5d5c42bf41d9c7bc75d0fd99834082e0a4814557aac63b",
-        "signature": "b18f79e9fcd60bed71e21a39761c8ceb9d20bf50d4815a1082979738d94c745c"
+        "version": "f5a60e9fe61b8048a431eaf6c5c7c1b9cb96139094b966fdb16daa62a277ace6",
+        "signature": "1637f821ee3876370a4b4ec59266e87f2e6bbdd3a5a740d3565ace31ca04fc5b"
       },
       "./src/validator/errors.ts": {
         "version": "a9737fd791435d4100ad5b80841261494939087d39236d1853d03def959e2682",
@@ -434,16 +454,36 @@
         "signature": "3612b8fcf140cdf679302bd2f63f26008ca59d796477450e86fad9490cad61d4"
       },
       "./src/validator/index.ts": {
-        "version": "a461241127933db3e9f69e3e7e11c0ea92e87cd6950a3880a9e2323dd040c2e6",
-        "signature": "9a6f8eca3eafd9ef651a9e2e01d344593eae00fc0e698f926f35c8275e6919f2"
+        "version": "cc15621863a77ba02f2069e49dd55c7984e19bfa4392dfa099bb947c4c0a0ef7",
+        "signature": "3be48f29e2e0567084170f78a5b4a10e52a073bf8fc6d1128bd48181bcb33ca4"
       },
       "./src/orm/model.ts": {
-        "version": "7b67b52a960e09c5358b18201113488028d50f5c6c51cac434ce224b81eb2e22",
-        "signature": "99f165b17c085e537144e4b7e897b6801a590bbce26794a2d487a4b72dcf76bf"
+        "version": "64fd30429818f8dcc8ed21f8cc91cb80b67a1c875f94fe86ea388a393fe4de01",
+        "signature": "84e2582a2c57459b1d602fc25c3cc691c90cb247d8e4c2e14330ca5190a8c82f"
       },
       "./src/orm/assocations.ts": {
         "version": "47b69bd668b48df7deb0ff9a71c34ac1daf83dc9cd5f6c1f15a8e84f6c88b582",
         "signature": "d07a7aed44bc7b4290d61664e8ee12b2e21bcf51c4c599faab9a91a149160b55"
+      },
+      "./node_modules/@types/chai/index.d.ts": {
+        "version": "4d46d75262498f3f7f2d6db1f9393324fe4f1999dff129c34c3ade6e79afd712",
+        "signature": "4d46d75262498f3f7f2d6db1f9393324fe4f1999dff129c34c3ade6e79afd712"
+      },
+      "./node_modules/@types/mysql/index.d.ts": {
+        "version": "64c77c2816bb60855b637880598fc3b7f1233614e17e09f29d51e7476222b6bf",
+        "signature": "64c77c2816bb60855b637880598fc3b7f1233614e17e09f29d51e7476222b6bf"
+      },
+      "./src/tests/setup.ts": {
+        "version": "cbc9cbcccea0af36391fb3bf8dea5c92a388016e268b4ff3053dc3ec08d2f1f8",
+        "signature": "74aa4ee6e47dec92c1ba53edef62b75628223ba40d63287f67da99f585bc3d25"
+      },
+      "./src/tests/main.test.ts": {
+        "version": "02e5983531185708cac1294b88eda788d52b6965433f3b8dfb702b01481d1920",
+        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+      },
+      "./node_modules/@types/mocha/index.d.ts": {
+        "version": "c4c03cf65951d980ba618ae9601d10438730803fc9c8a1f7b34af8739981e205",
+        "signature": "c4c03cf65951d980ba618ae9601d10438730803fc9c8a1f7b34af8739981e205"
       }
     },
     "options": {
@@ -1286,7 +1326,47 @@
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "./node_modules/nesthydrationjs/lib/nesthydrationjs.d.ts": [
+      "./node_modules/@types/lodash.isarray/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/lodash.isfunction/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/lodash.isplainobject/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/lodash.keys/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/lodash.values/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/orm/hydration.ts": [
+        "./node_modules/@types/lodash.isarray/index.d.ts",
+        "./node_modules/@types/lodash.isfunction/index.d.ts",
+        "./node_modules/@types/lodash.isplainobject/index.d.ts",
+        "./node_modules/@types/lodash.keys/index.d.ts",
+        "./node_modules/@types/lodash.values/index.d.ts",
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/util.d.ts",
@@ -1416,7 +1496,7 @@
         "./node_modules/knex/types/index.d.ts",
         "./node_modules/@types/lodash/ts3.1/index.d.ts",
         "./node_modules/@types/luxon/index.d.ts",
-        "./node_modules/nesthydrationjs/lib/nesthydrationjs.d.ts",
+        "./src/orm/hydration.ts",
         "./src/util.ts",
         "./src/validator/index.ts",
         "./src/validator/errors.ts",
@@ -1433,6 +1513,46 @@
       "./src/orm/assocations.ts": [
         "./src/orm/model.ts",
         "./src/orm/types.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/chai/index.d.ts": [
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/mysql/index.d.ts": [
+        "./node_modules/@types/node/stream.d.ts",
+        "./node_modules/@types/node/tls.d.ts",
+        "./node_modules/@types/node/ts3.2/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/tests/setup.ts": [
+        "./node_modules/@types/mysql/index.d.ts",
+        "./node_modules/knex/types/index.d.ts",
+        "./src/orm/index.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/tests/main.test.ts": [
+        "./node_modules/@types/chai/index.d.ts",
+        "./src/tests/setup.ts",
+        "./src/orm/types.ts",
+        "./node_modules/@types/node/async_hooks.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/mocha/index.d.ts": [
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/util.d.ts",
@@ -2245,7 +2365,36 @@
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "./node_modules/nesthydrationjs/lib/nesthydrationjs.d.ts": [
+      "./node_modules/@types/lodash.isarray/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/lodash.isfunction/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/lodash.isplainobject/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/lodash.keys/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/lodash.values/index.d.ts": [
+        "./node_modules/@types/lodash/ts3.1/index.d.ts",
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/util.d.ts",
@@ -2320,6 +2469,30 @@
       "./src/orm/assocations.ts": [
         "./src/orm/model.ts",
         "./src/orm/types.ts"
+      ],
+      "./node_modules/@types/chai/index.d.ts": [
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/mysql/index.d.ts": [
+        "./node_modules/@types/node/stream.d.ts",
+        "./node_modules/@types/node/tls.d.ts",
+        "./node_modules/@types/node/ts3.2/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/tests/setup.ts": [
+        "./src/orm/index.ts"
+      ],
+      "./node_modules/@types/mocha/index.d.ts": [
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -2418,10 +2591,16 @@
       "./node_modules/knex/types/result.d.ts",
       "./node_modules/knex/types/index.d.ts",
       "./node_modules/@types/luxon/index.d.ts",
-      "./node_modules/nesthydrationjs/lib/nesthydrationjs.d.ts",
+      "./node_modules/@types/lodash.isarray/index.d.ts",
+      "./node_modules/@types/lodash.isfunction/index.d.ts",
+      "./node_modules/@types/lodash.isplainobject/index.d.ts",
+      "./node_modules/@types/lodash.keys/index.d.ts",
+      "./node_modules/@types/lodash.values/index.d.ts",
+      "./src/orm/hydration.ts",
       "./src/orm/constant.ts",
       "./node_modules/@types/pluralize/index.d.ts",
       "./src/orm/types.ts",
+      "./src/orm/query_interface.ts",
       "./src/orm/index.ts",
       "./src/orm/database_validator.ts",
       "./src/validator/errors.ts",
@@ -2431,9 +2610,13 @@
       "./src/validator/properties.ts",
       "./src/validator/table.ts",
       "./src/validator/index.ts",
-      "./src/orm/model.ts",
       "./src/orm/assocations.ts",
-      "./src/orm/query_interface.ts"
+      "./node_modules/@types/chai/index.d.ts",
+      "./node_modules/@types/mysql/index.d.ts",
+      "./src/tests/setup.ts",
+      "./src/tests/main.test.ts",
+      "./node_modules/@types/mocha/index.d.ts",
+      "./src/orm/model.ts"
     ]
   },
   "version": "3.7.2"

@@ -2,7 +2,7 @@ import knex = require('knex');
 import { Validator } from '../validator';
 import { IValidationErrors } from '../validator/errors';
 import { Association } from './assocations';
-import { Orm } from './index';
+import { OQB } from './index';
 import { QueryInterface } from './query_interface';
 import { ForeignKey, Hook, IColumn, IColumnDefinitions, IDatabaseData, IDeleteOptions, IInsertOptions, IModelOptions, ISelectOptions, IUpdateOptions, PrimaryKey } from './types';
 export declare class Model {
@@ -14,7 +14,7 @@ export declare class Model {
     };
     static columnNames: string[];
     static primaryKeyColumnNames: string[];
-    static orm: Orm;
+    static oqb: OQB;
     static associations: {
         [key: string]: Association;
     };
@@ -22,7 +22,7 @@ export declare class Model {
     static timeStamps: boolean;
     static hooks: Hook[];
     static associate(): void;
-    static init(orm: Orm, name: string, columns: IColumnDefinitions, options: IModelOptions): void;
+    static init(orm: OQB, name: string, columns: IColumnDefinitions, options: IModelOptions): void;
     static validate(data: IDatabaseData, group?: string | string[], options?: {
         properties?: string[];
     }): Promise<null | IValidationErrors>;

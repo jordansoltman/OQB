@@ -63,9 +63,13 @@ class QueryInterface {
      * and a definition
      */
     select(rootModel, options) {
+        var _a;
         const tableName = rootModel.tableName;
         const selectOptions = Object.assign({}, options);
-        const orders = selectOptions.order ? selectOptions.order : [];
+        const orders = (_a = selectOptions.order, (_a !== null && _a !== void 0 ? _a : []));
+        // Includes can be defined in a myriad of formats including a string,
+        // array of strings, or objects. We want our options to be standardized by turning all of the 
+        // includes into objects.
         selectOptions.include =
             this.standardizeSelectInclude(selectOptions.include);
         let standardizedOptions = selectOptions;
@@ -73,29 +77,33 @@ class QueryInterface {
         // so that we can run the query against it
         const whereAssociations = selectOptions.where ? this.getAssociationsFromWhere(selectOptions.where) : [];
         // get the associations that need to be preloaded from the orders
-        const orderAssociations = orders
-            .filter((order) => typeof order[0] !== 'string')
-            .map((order) => order[0].relation);
-        standardizedOptions = this.addIncludeInSubqueryOptionToRelations(standardizedOptions, [...orderAssociations, ...whereAssociations]);
+        // const orderAssociations = orders
+        //     .filter((order) => typeof order[0] !== 'string')
+        //     .map((order) => (order[0] as IRelatedColumnIdentifier).relation) as string[][];
+        standardizedOptions = this.addIncludeInSubqueryOptionToRelations(standardizedOptions, whereAssociations);
         const [joinTree, definition, meta] = this.buildSelectJoinTree(rootModel, standardizedOptions);
         const queryBuilder = this;
         // Build the count query.
         const countQuery = this.knex.queryBuilder().count('* as count').from(tableName);
-        if (joinTree.required || meta.hasMultiAssociation) {
-            queryBuilder.buildSelectSubQuery(countQuery, joinTree, true);
+        // Check conditions of the count query
+        if (meta.hasMultiAssociation || joinTree.required) {
+            queryBuilder.buildSelectSubQuery(countQuery, joinTree);
         }
         else {
             queryBuilder.buildSelectQuery(countQuery, joinTree);
         }
+        if (standardizedOptions.log) {
+            console.log("Count Query", countQuery.toString());
+        }
         // Build the main query
         const query = this.knex.queryBuilder().options({ nestTables: '.' });
         // Determine if we need to build a sub query as well
-        if (joinTree.required || (standardizedOptions.limit && meta.hasMultiAssociation)) {
+        if (standardizedOptions.limit && meta.hasMultiAssociation) {
             query.from(function () {
                 const subQuery = this.select(`${tableName}.*`).from(tableName).as(tableName);
-                queryBuilder.buildSelectSubQuery(subQuery, joinTree, true);
+                queryBuilder.buildSelectSubQuery(subQuery, joinTree);
                 queryBuilder.setSelectQueryLimitOffset(subQuery, standardizedOptions);
-                queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
+                // queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
             });
         }
         else {
@@ -108,7 +116,7 @@ class QueryInterface {
         this.buildSelectQuery(query, joinTree);
         if (options.log === true) {
             // tslint:disable-next-line
-            console.log(query.toString());
+            console.log("Main Query", query.toString());
         }
         if (options.transaction) {
             query.transacting(options.transaction);
@@ -148,7 +156,19 @@ class QueryInterface {
         };
         // Call the recursive _buildJoinTree() method to complete the tree.
         this._buildSelectJoinTree(includeOptions, rootNode, definition, [rootTableName], meta);
+        this._determineFirstMultiRelationships(rootNode);
         return [rootNode, definition, meta];
+    }
+    // Look through a join node tree and determine if each relationship is the first multi-relationship
+    _determineFirstMultiRelationships(node) {
+        if (node.multiAssociation) {
+            node.firstMultiAssociation = true;
+        }
+        else if (node.children) {
+            for (const child of node.children) {
+                this._determineFirstMultiRelationships(child);
+            }
+        }
     }
     /**
      * HELPER METHOD
@@ -208,6 +228,7 @@ class QueryInterface {
             }
             if (includeOptions.include) {
                 node.children = [];
+                node.associatedChildren = {};
                 for (const childInclude of Object.values(includeOptions.include)) {
                     const assocationName = childInclude.association;
                     let throughOptions = {};
@@ -225,6 +246,8 @@ class QueryInterface {
                     let currentNode = node;
                     let nextDefinition = {};
                     const throughDefinition = {};
+                    // Belongs to many associations are handled specially since we need to add another node
+                    // for the through relation
                     if (assocation instanceof assocations_1.BelongsToManyAssociation) {
                         rootPath.push('through+' + assocationName);
                         const tableAlias = rootPath.join(TABLE_JOIN_STRING);
@@ -239,6 +262,7 @@ class QueryInterface {
                             children: [],
                             tableAlias
                         };
+                        currentNode.associatedChildren[assocationName] = throughNode;
                         currentNode.children.push(throughNode);
                         currentNode = throughNode;
                         // If this node is required, by definition every node above it
@@ -294,6 +318,9 @@ class QueryInterface {
                         keyMap: assocation.toKeyMap,
                         tableAlias: rootPath.join(TABLE_JOIN_STRING)
                     };
+                    if (!(assocation instanceof assocations_1.BelongsToManyAssociation)) {
+                        node.associatedChildren[assocationName] = newNode;
+                    }
                     currentNode.children.push(newNode);
                     this._buildSelectJoinTree(childInclude, newNode, nextDefinition, rootPath, meta);
                 }
@@ -394,7 +421,7 @@ class QueryInterface {
             });
         }
     }
-    buildSelectSubQuery(query, node, firstMulti) {
+    buildSelectSubQuery(query, node) {
         const model = this;
         const knex = this.knex;
         if (node.model.softDeletes === true && node.includeSoftDeleted !== true && node.parent === null) {
@@ -410,12 +437,12 @@ class QueryInterface {
         if (node.children) {
             for (const childNode of node.children) {
                 // We are only joining the required joins
-                if (!childNode.required && !childNode.includeInSubquery) {
+                if (!childNode.includeInSubquery && !childNode.required) {
                     continue;
                 }
                 const tableName = childNode.model.tableName;
                 // If it's a multi-association and the first one, we treat it differently
-                if (childNode.multiAssociation && firstMulti) {
+                if (childNode.firstMultiAssociation) {
                     query.whereExists((subQuery) => {
                         subQuery.select().from(`${tableName} AS ${childNode.tableAlias}`).where(function () {
                             for (const [rootColumn, joinColumn] of Object.entries(childNode.keyMap)) {
@@ -430,7 +457,7 @@ class QueryInterface {
                             }
                         })
                             .limit(1);
-                        model.buildSelectSubQuery(subQuery, childNode, false);
+                        model.buildSelectSubQuery(subQuery, childNode);
                     });
                 }
                 else {
@@ -447,7 +474,7 @@ class QueryInterface {
                             });
                         }
                     });
-                    model.buildSelectSubQuery(query, childNode, firstMulti);
+                    model.buildSelectSubQuery(query, childNode);
                 }
             }
         }

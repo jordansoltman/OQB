@@ -1,4 +1,7 @@
 "use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -8,7 +11,7 @@ const model_1 = require("./model");
 const query_interface_1 = require("./query_interface");
 var constant_1 = require("./constant");
 exports.DataType = constant_1.DataType;
-class Orm {
+class OQB {
     constructor(knexConfig) {
         this.models = {};
         this._knex = knex_1.default(knexConfig);
@@ -38,5 +41,6 @@ class Orm {
         });
     }
 }
-exports.Orm = Orm;
+exports.OQB = OQB;
+__export(require("./model"));
 //# sourceMappingURL=index.js.map

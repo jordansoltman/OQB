@@ -1,4 +1,4 @@
-import { Orm } from '../orm';
+import { OQB } from '../orm';
 import { IDatabaseData } from '../orm/types';
 import { IValidationErrors } from './errors';
 import { ValidationPropertyConstraintSet } from './property_constraint_set';
@@ -6,7 +6,7 @@ import { ValidationTable } from './table';
 export declare class Validator {
     private validationProperties;
     private validationTable;
-    constructor(orm: Orm);
+    constructor(orm: OQB);
     /**
      * Validates the data for the given group.
      *

@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = __importStar(require("lodash"));
 const luxon_1 = require("luxon");
-const nesthydrationjs_1 = __importDefault(require("nesthydrationjs"));
+const hydration_1 = __importDefault(require("./hydration"));
 const util_1 = require("../util");
 const validator_1 = require("../validator");
 const assocations_1 = require("./assocations");
 const constant_1 = require("./constant");
-const nh = nesthydrationjs_1.default();
+const nh = hydration_1.default();
 // nh.registerType(DataType.BOOLEAN, (value) => {
 //     console.log(value);
 //     return value;
@@ -28,17 +28,17 @@ const nh = nesthydrationjs_1.default();
 // });
 class Model {
     static get queryInterface() {
-        return this.orm.queryInterface;
+        return this.oqb.queryInterface;
     }
     static get knex() {
-        return this.orm.knex;
+        return this.oqb.knex;
     }
     // Overridden by sub methods
     // tslint:disable-next-line: no-empty
     static associate() { }
     // tslint:disable-next-line: no-shadowed-variable
     static init(orm, name, columns, options) {
-        this.orm = orm;
+        this.oqb = orm;
         const defaultModelOptions = {
             softDeletes: false,
             timeStamps: true
@@ -66,7 +66,7 @@ class Model {
         }
         // Build the actual model
         // const model = class extends Model { };
-        this.orm = orm;
+        this.oqb = orm;
         this.tableName = name;
         this.columns = columnObjects;
         this.columnNames = Object.keys(columns);
@@ -235,7 +235,7 @@ class Model {
     }
     static configureValidator(validator) { }
     static get validator() {
-        const validator = new validator_1.Validator(this.orm);
+        const validator = new validator_1.Validator(this.oqb);
         this.configureValidator(validator);
         return validator;
     }
@@ -343,11 +343,11 @@ class Model {
             not be established because the 'to' model is not defined, or is not a model.`);
         }
         if (typeof foreignKey === 'string' && to.primaryKeyColumnNames.length > 1) {
-            throw new Error(`Has to relationship (${as}) from ${this.tableName} to ${to.tableName} requires a
+            throw new Error(`Has one relationship (${as}) from ${this.tableName} to ${to.tableName} requires a
             foreign key map because ${to.tableName} has a composite primary key.`);
         }
         const foreignKeyMap = typeof foreignKey === 'string' ?
-            { [to.primaryKeyColumnNames[0]]: foreignKey } :
+            { [this.primaryKeyColumnNames[0]]: foreignKey } :
             foreignKey;
         const assocation = new assocations_1.HasOneAssociation(to, foreignKeyMap);
         this._associate(as, assocation);

@@ -161,7 +161,7 @@ describe('Find All Query Selection', () => {
         })
         expect(count).to.equal(3);
         expect(result).length(3);
-    })
+    });
 
     it('include required belongs to many association', async() => {
         const [result, count] = await orm.models.customer.findAll({
@@ -172,7 +172,7 @@ describe('Find All Query Selection', () => {
         });
         expect(count).to.equal(3);
         expect(result).length(3);
-    })
+    });
 
     it('include required has many association with limit', async () => {
         const [result, count] = await orm.models.customer.findAll({
@@ -184,6 +184,6 @@ describe('Find All Query Selection', () => {
         })
         expect(count).to.equal(3);
         expect(result).length(1);
-    })
+    });
 
 });

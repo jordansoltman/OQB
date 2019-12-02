@@ -27,6 +27,7 @@ export declare class QueryInterface {
      * @memberof QueryInterface
      */
     private buildSelectJoinTree;
+    private _determineFirstMultiRelationships;
     /**
      * HELPER METHOD
      * Recursively builds a join tree of join tree nodes that represent a models

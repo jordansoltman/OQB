@@ -13,7 +13,7 @@ export interface IColumnDefinition {
 export interface IModels {
     [key: string]: typeof Model;
 }
-export declare class Orm {
+export declare class OQB {
     models: IModels;
     private _queryInterface;
     private _knex;
@@ -24,3 +24,4 @@ export declare class Orm {
     defineModel(tableName: string, columns: IColumnDefinitions, options: IModelOptions): typeof Model;
     associateAllModels(): void;
 }
+export * from './model';
