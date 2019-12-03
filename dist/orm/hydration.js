@@ -1,5 +1,4 @@
 "use strict";
-const isArray = require("lodash.isarray");
 const isFunction = require("lodash.isfunction");
 const isPlainObject = require("lodash.isplainobject");
 const keys = require("lodash.keys");
@@ -41,7 +40,7 @@ var NestHydrationJS;
             if (data === null) {
                 return null;
             }
-            if (!isArray(structPropToColumnMap) && !isPlainObject(structPropToColumnMap) &&
+            if (!Array.isArray(structPropToColumnMap) && !isPlainObject(structPropToColumnMap) &&
                 structPropToColumnMap !== null && structPropToColumnMap !== true) {
                 throw new Error('nest expects param structPropToColumnMap to be an array, plain object, null, or true');
             }
@@ -50,7 +49,7 @@ var NestHydrationJS;
                 // could be passed as the first (and only) row of that table
                 table = [data];
             }
-            else if (isArray(data)) {
+            else if (Array.isArray(data)) {
                 table = data;
             }
             else {
@@ -74,7 +73,7 @@ var NestHydrationJS;
             }
             else if (table.length === 0) {
                 // table is empty, return the appropriate empty result based on input definition
-                return isArray(structPropToColumnMap) ? [] : null;
+                return Array.isArray(structPropToColumnMap) ? [] : null;
             }
             // COMPLETE VALIDATING PARAMS AND BASIC INITIALIZATION
             const meta = this.buildMeta(structPropToColumnMap);
@@ -106,7 +105,7 @@ var NestHydrationJS;
                     // Add array values if necessary
                     for (const prop of objMeta.arraysList) {
                         const cellValue = this.computeActualCellValue(prop, row[prop.column]);
-                        if (isArray(obj[prop.prop])) {
+                        if (Array.isArray(obj[prop.prop])) {
                             obj[prop.prop].push(cellValue);
                         }
                         else {
@@ -138,7 +137,7 @@ var NestHydrationJS;
                     // Add array values
                     for (const prop of objMeta.arraysList) {
                         const cellValue = this.computeActualCellValue(prop, row[prop.column]);
-                        if (isArray(obj[prop.prop])) {
+                        if (Array.isArray(obj[prop.prop])) {
                             obj[prop.prop].push(cellValue);
                         }
                         else {
@@ -386,7 +385,7 @@ var NestHydrationJS;
                             objMeta.valueList.push(metaValueProps);
                         }
                     }
-                    else if (isArray(structPropToColumnMap[prop])) {
+                    else if (Array.isArray(structPropToColumnMap[prop])) {
                         // list of objects / to-many relation
                         objMeta.toManyPropList.push(prop);
                         recursiveBuildMeta(structPropToColumnMap[prop][0], true, idColumns, prop);
@@ -422,7 +421,7 @@ var NestHydrationJS;
                 primeIdColumnList: [],
                 idMap: {},
             };
-            if (isArray(structPropToColumnMap)) {
+            if (Array.isArray(structPropToColumnMap)) {
                 if (structPropToColumnMap.length !== 1) {
                     // tslint:disable-next-line: max-line-length
                     throw new Error(`invalid structPropToColumnMap format - can not have multiple roots for structPropToColumnMap, if an array it must only have one item`);
