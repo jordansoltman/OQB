@@ -86,6 +86,7 @@ class QueryInterface {
         // Build the count query.
         const countQuery = this.knex.queryBuilder().count('* as count').from(tableName);
         // Check conditions of the count query
+        // FIXME: why is this different han down below...
         if (meta.hasMultiAssociation || joinTree.required) {
             queryBuilder.buildSelectSubQuery(countQuery, joinTree);
         }
@@ -100,10 +101,13 @@ class QueryInterface {
         // Determine if we need to build a sub query as well
         if (standardizedOptions.limit && meta.hasMultiAssociation) {
             query.from(function () {
+                var _a;
                 const subQuery = this.select(`${tableName}.*`).from(tableName).as(tableName);
                 queryBuilder.buildSelectSubQuery(subQuery, joinTree);
                 queryBuilder.setSelectQueryLimitOffset(subQuery, standardizedOptions);
-                // queryBuilder.setSelectQueryOrder(rootModel, subQuery, orders);
+                // Get the orders that are for the base table
+                const baseTableOrders = (_a = standardizedOptions.order, (_a !== null && _a !== void 0 ? _a : [])).filter((order) => typeof order[0] === 'string');
+                queryBuilder.setSelectQueryOrder(rootModel, subQuery, baseTableOrders);
             });
         }
         else {

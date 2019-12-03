@@ -11,6 +11,31 @@ after(async () => {
     setup_1.orm.knex.destroy();
 });
 describe('Find All Query Selection', () => {
+    it('can order when limited and including multi-relation', async () => {
+        const result = await setup_1.orm.models.customer.findOne({
+            order: [['id', types_1.SortDirection.DESC]],
+            include: ['orders', 'value']
+        });
+        chai_1.expect(result).to.not.equal(null);
+        chai_1.expect(result.id).to.equal(4);
+    });
+    it('can handle multiple orders on the base table when limited and including multi-relation', async () => {
+        const result = await setup_1.orm.models.customer.findOne({
+            order: [['name', types_1.SortDirection.ASC], ['id', types_1.SortDirection.DESC]],
+            include: ['orders', 'value']
+        });
+        chai_1.expect(result).to.not.equal(null);
+        chai_1.expect(result.id).to.equal(3);
+    });
+    it('can handle multiple orders on the base table and joined table when limited and including multi-relation', async () => {
+        const result = await setup_1.orm.models.customer.findOne({
+            order: [['name', types_1.SortDirection.ASC], [{ relation: ['orders'], column: 'id' }, types_1.SortDirection.DESC]],
+            include: ['orders', 'value']
+        });
+        chai_1.expect(result).to.not.equal(null);
+        chai_1.expect(result.id).to.equal(3);
+        chai_1.expect(result.orders[0].id).to.equal(8);
+    });
     it('can select all objects', async () => {
         const [result, count] = await setup_1.orm.models.customer.findAll();
         chai_1.expect(count).equal(4);

@@ -6,10 +6,10 @@
     "scripts": {
         "test": "mocha -r ts-node/register src/tests/**/*.test.ts"
     },
-    "author": "",
+    "author": "Jordan Soltman",
+    "repository": "https://github.com/jordansoltman/OQB",
     "license": "ISC",
     "dependencies": {
-        "lodash.isarray": "^4.0.0",
         "lodash.isfunction": "^3.0.9",
         "lodash.keys": "^4.2.0",
         "lodash.values": "^4.3.0",
@@ -30,7 +30,6 @@
         "@types/node": "^12.11.1",
         "@types/pluralize": "0.0.29",
         "@types/validator": "^10.11.3",
-        "@types/lodash.isarray": "^4.0.6",
         "@types/lodash.isfunction": "^3.0.6",
         "@types/lodash.isplainobject": "^4.0.6",
         "@types/lodash.keys": "^4.2.6",
