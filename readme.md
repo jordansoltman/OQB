@@ -1,5 +1,7 @@
 # OQB - Object Query Builder
 
+[![Build Status](https://travis-ci.org/jordansoltman/OQB.svg?branch=master)](https://travis-ci.org/jordansoltman/OQB)
+
 ### Why another ORM?
 
 First off, this project is not aiming to be a full featured ORM. It was born out of the need to get nested JSON objects from a MySQL database without writing a ton of redundant code. It was built because many existing ORMs did not meet the needs of my projects, namely first class support for soft deletes, typescript support, and composite keys. It's heavily influenced by Sequelize, built on top of knex.js and a custom version of NestHydration.
