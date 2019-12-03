@@ -16,6 +16,34 @@ after(async() => {
 
 describe('Find All Query Selection', () => {
 
+    it('can order when limited and including multi-relation', async () => {
+        const result = await orm.models.customer.findOne({
+            order: [['id', SortDirection.DESC]],
+            include: ['orders', 'value']
+        });
+        expect(result).to.not.equal(null);
+        expect(result.id).to.equal(4);
+    });
+
+    it('can handle multiple orders on the base table when limited and including multi-relation', async () => {
+        const result = await orm.models.customer.findOne({
+            order: [['name', SortDirection.ASC], ['id', SortDirection.DESC]],
+            include: ['orders', 'value']
+        });
+        expect(result).to.not.equal(null);
+        expect(result.id).to.equal(3);
+    });
+
+    it('can handle multiple orders on the base table and joined table when limited and including multi-relation', async () => {
+        const result = await orm.models.customer.findOne({
+            order: [['name', SortDirection.ASC], [{relation: ['orders'], column: 'id'}, SortDirection.DESC]],
+            include: ['orders', 'value']
+        });
+        expect(result).to.not.equal(null);
+        expect(result.id).to.equal(3);
+        expect(result.orders[0].id).to.equal(8);
+    });
+
     it('can select all objects', async () => {
         const [result, count] = await orm.models.customer.findAll();
         expect(count).equal(4);
