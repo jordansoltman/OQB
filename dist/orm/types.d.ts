@@ -64,19 +64,19 @@ export interface IWhere {
     /**
      * Compared using the '>' operator
      */
-    gt?: ColumnValue<number | Date | Raw>;
+    gt?: ColumnValue<number | Date | Raw | string>;
     /**
      * Compared using the '>=' operator
      */
-    gte?: ColumnValue<number | Date | Raw>;
+    gte?: ColumnValue<number | Date | Raw | string>;
     /**
      * Compared using the '<' operator
      */
-    lt?: ColumnValue<number | Date | Raw>;
+    lt?: ColumnValue<number | Date | Raw | string>;
     /**
      * Compared using the '<=' operator
      */
-    lte?: ColumnValue<number | Date | Raw>;
+    lte?: ColumnValue<number | Date | Raw | string>;
 }
 /**
  * The select options for a table

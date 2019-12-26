@@ -11,7 +11,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = __importStar(require("lodash"));
-const luxon_1 = require("luxon");
 const hydration_1 = __importDefault(require("./hydration"));
 const util_1 = require("../util");
 const validator_1 = require("../validator");
@@ -80,13 +79,13 @@ class Model {
             const column = this.columns[key];
             if (column && column.type) {
                 switch (column.type) {
-                    // FIXME: Do we need to consider other types?
-                    case constant_1.DataType.DATETIME:
-                    case constant_1.DataType.DATE:
-                        if (typeof value === 'string') {
-                            convertedValues[key] = luxon_1.DateTime.fromISO(value).toJSDate();
-                        }
-                        break;
+                    // NOTE: this removal might seriously break some things. SHOULD TEST!
+                    // case DataType.DATETIME:
+                    // case DataType.DATE:
+                    //     if (typeof value === 'string') {
+                    //         convertedValues[key] = DateTime.fromISO(value).toJSDate();
+                    //     }
+                    //     break;
                 }
             }
         }
