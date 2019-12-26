@@ -19,7 +19,9 @@ const TEST_CONFIG = (process.env.NODE_ENV === 'travis') ?
             host: 'localhost',
             user: 'root',
             password: '1247133182',
-            database: 'ORM_TEST'
+            database: 'ORM_TEST',
+            timezone: 'UTC',
+            // dateStrings: true
         }
     };
     
@@ -54,6 +56,8 @@ async function runMigrations() {
         table.increments('id');
         table.boolean('active');
         table.string('name');
+        table.date('birthday');
+        table.dateTime('join_date')
     });
 
     await knex.schema.createTable('customer_value', (table) => {
@@ -87,10 +91,10 @@ export async function loadData() {
     const knex = Knex(TEST_CONFIG);
 
     await knex('customer').insert([
-        { id: 1, name: 'Jordan', active: true },
-        { id: 2, name: 'Madelyn', active: true },
-        { id: 3, name: 'Brendan', active: true },
-        { id: 4, name: 'Michael', active: true },
+        { id: 1, name: 'Jordan', active: true, birthday: new Date(1991, 8, 3), join_date: '2019-10-02 10:45:32' },
+        { id: 2, name: 'Madelyn', active: true, birthday: '1991-09-10', join_date: '2018-03-10 18:10:20' },
+        { id: 3, name: 'Brendan', active: true, birthday: '1992-03-19', join_date: '2012-02-01 3:33:33' },
+        { id: 4, name: 'Michael', active: true, birthday: '1953-09-12', join_date: '2014-05-05 17:42:10' },
     ]);
 
     await knex('customer_value').insert([
@@ -165,6 +169,8 @@ Customer.init(orm, 'customer', {
     id: { primary: true, type: DataType.INTEGER, nullable: false },
     name: { primary: false, type: DataType.STRING, nullable: false },
     active: { primary: false, type: DataType.BOOLEAN, nullable: false },
+    birthday: { primary: false, type: DataType.DATE, nullable: false },
+    join_date: { primary: false, type: DataType.DATETIME, nullable: false },
 }, { timeStamps: false });
 
 class Order extends Model {

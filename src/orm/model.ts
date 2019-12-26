@@ -114,13 +114,13 @@ export class Model {
             const column = this.columns[key];
             if (column && column.type) {
                 switch (column.type) {
-                    // FIXME: Do we need to consider other types?
-                    case DataType.DATETIME:
-                    case DataType.DATE:
-                        if (typeof value === 'string') {
-                            convertedValues[key] = DateTime.fromISO(value).toJSDate();
-                        }
-                        break;
+                    // NOTE: this removal might seriously break some things. SHOULD TEST!
+                    // case DataType.DATETIME:
+                    // case DataType.DATE:
+                    //     if (typeof value === 'string') {
+                    //         convertedValues[key] = DateTime.fromISO(value).toJSDate();
+                    //     }
+                    //     break;
                 }
             }
         }

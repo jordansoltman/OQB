@@ -14,6 +14,15 @@ after(async() => {
     orm.knex.destroy();
 })
 
+describe('Dates and date times', () => {
+    
+    it('can fetch date times', async () => {
+        const result = await orm.models.customer.findAll();
+        console.log();
+    });
+
+})
+
 describe('Find All Query Selection', () => {
 
     it('can order when limited and including multi-relation', async () => {
